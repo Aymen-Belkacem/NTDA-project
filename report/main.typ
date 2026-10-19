@@ -36,23 +36,25 @@ detection. A recent systematic review @motie2024financial analysed 33 articles a
 called for further work on dynamic and heterogeneous graphs, particularly in
 cross-domain applications.
 
-== Contributions
-// TODO: list the contributions of this review and how it differs from @motie2024financial.
-#lorem(40)
 
+
+
+= Review Methodology <sec:method>
+// TODO: research questions, databases searched, search query, inclusion/exclusion
+// criteria, PRISMA-style selection flow (records found -> screened -> included).
+#lorem(80)
+
+= Existing review papers and  and limits 
+// TODO
 = Background <sec:background>
-== Graph Neural Networks
+
+== Technical foundations of Graph Neural Networks
 // TODO: message passing, GCN, GAT, heterogeneous GNNs, graph transformers.
 #lorem(60)
 
 == Financial Fraud
 // TODO: fraud types (money laundering, credit card fraud, insurance, tax evasion...).
 #lorem(60)
-
-= Review Methodology <sec:method>
-// TODO: research questions, databases searched, search query, inclusion/exclusion
-// criteria, PRISMA-style selection flow (records found -> screened -> included).
-#lorem(80)
 
 = Taxonomy of GNN-Based Approaches <sec:taxonomy>
 Following @motie2024financial, existing models can be grouped into four families
@@ -105,9 +107,10 @@ transformer-based models.
 // TODO: describe each dataset (domain, labels, anomaly ratio, graph type).
 #lorem(80)
 
-= Application Domains <sec:domains>
-// TODO: cryptocurrency, credit cards, online payments, taxation, insurance.
-#lorem(80)
+= Recent developpements not covered  by existing review papers
+
+= Discussions 
+
 
 = Open Challenges and Future Directions <sec:challenges>
 // TODO: edge- and graph-level anomaly detection; unsupervised and semi-supervised
