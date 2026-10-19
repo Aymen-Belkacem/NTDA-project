@@ -20,6 +20,28 @@ Résumé du review paper:
 !["test"](./Images/1-s2.0-S0957417423026581-gr4_lrg.jpg)
 
 
+## Review paper de 2024
+
+Titre: "Graph Neural Networks for Financial Fraud Detection: A Review".
+
+### Abstract
+
+- This review reveals that GNNs are exceptionally adept at capturing complex relational patterns and dynamics within financial networks, significantly outperforming traditional fraud detection methods.
+- This review not only highlights the potential of GNNs to improve fraud detection mechanisms but also identifies current gaps and outlines future research directions
+to enhance their deployment in financial systems.
+- 100 studies reviewed
+
+### Introduction
+
+- Traditional rule-based systems and classic machine learning methods have been used for fraud detection, but they often struggle with complex fraud patterns on large amounts of financial data [5–11].
+- Despite the potential of GNNs in fraud detection, there are practical challenges that need to be addressed. These include managing large-scale financial graph data and ensuring model adaptability to dynamic patterns [33–37].
+- this study proposes the following detailed research questions (RQs):
+    - RQ1: How can various GNN methodologies in financial fraud detection be understood through a unified framework?
+    - RQ2: Why use GNNs for financial fraud detection? What roles do they play?
+    - RQ3: How to design GNNs suitable for financial fraud detection?
+    - RQ4: How are GNNs deployed in real-world financial fraud detection scenarios, and what are their impacts?
+    - RQ5: What are the current challenges and futuredirections for GNNs in financial fraud detection?
+
 ## Datasets
 
 
