@@ -39,14 +39,14 @@ cross-domain applications.
 
 
 
-= Review Methodology <sec:method>
+= Methodology <sec:method>
 // TODO: research questions, databases searched, search query, inclusion/exclusion
 // criteria, PRISMA-style selection flow (records found -> screened -> included).
 #lorem(80)
 
-= Existing review papers and  and limits 
+== Existing review papers and  and limits 
 // TODO
-= Background <sec:background>
+== Background <sec:background>
 
 == Technical foundations of Graph Neural Networks
 // TODO: message passing, GCN, GAT, heterogeneous GNNs, graph transformers.
@@ -56,7 +56,7 @@ cross-domain applications.
 // TODO: fraud types (money laundering, credit card fraud, insurance, tax evasion...).
 #lorem(60)
 
-= Taxonomy of GNN-Based Approaches <sec:taxonomy>
+== Taxonomy of GNN-Based Approaches <sec:taxonomy>
 Following @motie2024financial, existing models can be grouped into four families
 (@fig:taxonomy): convolutional-based, attention-based, metapath-based and
 transformer-based models.
@@ -66,21 +66,18 @@ transformer-based models.
   caption: [Taxonomy of GNN models for financial fraud detection, from @motie2024financial.],
 ) <fig:taxonomy>
 
-== Convolutional-Based Models
+=== Convolutional-Based Models
 #lorem(50)
 
-== Attention-Based Models
+=== Attention-Based Models
 #lorem(50)
 
-== Metapath-Based Models
+=== Metapath-Based Models
 #lorem(50)
 
-== Transformer-Based Models
+=== Transformer-Based Models
 #lorem(50)
 
-= Graph Types <sec:graphs>
-// TODO: homogeneous vs. heterogeneous; static vs. temporal vs. dynamic graphs.
-#lorem(80)
 
 = Datasets <sec:datasets>
 @tab:datasets summarises the main public graph datasets for financial fraud detection.
@@ -107,9 +104,8 @@ transformer-based models.
 // TODO: describe each dataset (domain, labels, anomaly ratio, graph type).
 #lorem(80)
 
-= Recent developpements not covered  by existing review papers
+= Recent developpements
 
-= Discussions 
 
 
 = Open Challenges and Future Directions <sec:challenges>
@@ -117,5 +113,5 @@ transformer-based models.
 // learning; dataset scarcity (taxation, real estate, mortgage); dynamic graphs.
 #lorem(80)
 
-= Conclusion
-#lorem(60)
+= Discussions and conclusion
+
