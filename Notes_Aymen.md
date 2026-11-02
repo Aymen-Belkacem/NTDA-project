@@ -125,6 +125,12 @@ to enhance their deployment in financial systems.
 
 - The introduction of a unified framework helps to systematize the diverse approaches observed in existing literature, offering a clearer understanding of how GNNs can be effectively applied in complex financial contexts.
 
+## Recent papers (published after the review papers)
+
+- Dynamic heterogeneous graph contrastive learning for uncovering collusive financial fraud (https://www.nature.com/articles/s41598-026-58938-5)
+- See Zotero collection
+
+
 ## Datasets
 
 
