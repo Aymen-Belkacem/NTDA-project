@@ -31,12 +31,14 @@
 
 = Introduction
 // TODO: motivation (cost of financial fraud), why graphs, contributions of this review.
+
+A faire par Shehrazade
+
 Graph neural networks (GNNs) have become a prominent approach for financial fraud
 detection. A recent systematic review @motie2024financial analysed 33 articles and
 called for further work on dynamic and heterogeneous graphs, particularly in
 cross-domain applications.
 
-A faire par Shehrazade
 
 
 
