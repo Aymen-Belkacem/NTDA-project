@@ -14,6 +14,8 @@ Résumé du review paper:
 - Principalement apprentissage supervisés
 - Domaines d'application: cryptocurrency, credit cards, online payments, taxation, and insurance
 - Types de graphes: homogeneous, heterogeneous, static, temporal, and dynamic graphs
-- Lacunes de recherche:  Limited edge-level and graph-level anomaly detection; need for more unsupervised approaches
-
+- Lacunes de recherche:  Limited edge-level and graph-level anomaly detection or the detection of abnormal communities in a graph; need for more unsupervised approaches
+- 50% of papers are on crypto
+- 90% of data is real
+- 15% of papers publish their code
 !["test"](./Images/1-s2.0-S0957417423026581-gr4_lrg.jpg)

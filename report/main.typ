@@ -36,6 +36,7 @@ detection. A recent systematic review @motie2024financial analysed 33 articles a
 called for further work on dynamic and heterogeneous graphs, particularly in
 cross-domain applications.
 
+A faire par Shehrazade
 
 
 
@@ -44,17 +45,28 @@ cross-domain applications.
 // criteria, PRISMA-style selection flow (records found -> screened -> included).
 #lorem(80)
 
+== Background <sec:background>
+
+https://github.com/Aymen-Belkacem/NTDA-project
+
+A faire par Shehrazade
+
 == Existing review papers and  and limits 
 // TODO
-== Background <sec:background>
+
+A faire par aymen, bientot fait
 
 == Technical foundations of Graph Neural Networks
 // TODO: message passing, GCN, GAT, heterogeneous GNNs, graph transformers.
 #lorem(60)
 
+A faire par Shehrazade
+
 == Financial Fraud
 // TODO: fraud types (money laundering, credit card fraud, insurance, tax evasion...).
 #lorem(60)
+
+A faire par Shehrazade
 
 == Taxonomy of GNN-Based Approaches <sec:taxonomy>
 Following @motie2024financial, existing models can be grouped into four families
@@ -66,21 +78,29 @@ transformer-based models.
   caption: [Taxonomy of GNN models for financial fraud detection, from @motie2024financial.],
 ) <fig:taxonomy>
 
+A faire par Aymen
+
 === Convolutional-Based Models
 #lorem(50)
+A faire par Aymen
 
 === Attention-Based Models
 #lorem(50)
+A faire par Aymen
 
 === Metapath-Based Models
 #lorem(50)
+A faire par Aymen
 
 === Transformer-Based Models
 #lorem(50)
+A faire par Aymen
 
 
 = Datasets <sec:datasets>
 @tab:datasets summarises the main public graph datasets for financial fraud detection.
+
+A faire par Aymen
 
 #figure(
   caption: [Public graph datasets for financial fraud detection],
@@ -104,8 +124,11 @@ transformer-based models.
 // TODO: describe each dataset (domain, labels, anomaly ratio, graph type).
 #lorem(80)
 
-= Recent developpements
+= Results
 
+A faire par Shehrazade et Aymen
+
+Tableau de resultats: Shehrazade
 
 
 = Open Challenges and Future Directions <sec:challenges>

@@ -2,7 +2,13 @@
 
 
 
+## Review papers synthesis
 
+- Domination of node based models
+- Dynamic graphs under explored
+- Heterogenous graphs unexplored
+- Dealing with lack of labels: reinforced learning or pretraining
+- Dominant models: GCN GAT GraphSAGE
 
 ## Recent papers (published after the review papers)
 
@@ -18,3 +24,4 @@
 - **DGraph:** A massive real-world dynamic financial dataset modeling user interactions, loan-guarantor relations, and financial risks across millions of nodes[8].
 - **FinFraudBench (CreditCard-Fraud &amp; BankTrans-Fraud):** Recent multi-entity, heterogeneous graph benchmarks constructed from real-world tabular financial records[11][12]. They include **6 node types** (*Transaction, Customer, Card, Merchant, Category, Location*) and **14 directed edge type**
 - Elliptic2 (https://arxiv.org/abs/2404.19109). a large graph dataset containing 122K labeled subgraphs of Bitcoin clusters within a background graph consisting of 49M node clusters and 196M edge transactions. The dataset provides subgraphs known to be linked to illicit activity for learning the set of "shapes" that money laundering exhibits in cryptocurrency and accurately classifying new criminal activity
+- phishing Ethereum, IEEE-CIS, données d’assurance de Tianchi

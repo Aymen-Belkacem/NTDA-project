@@ -85,6 +85,7 @@ to enhance their deployment in financial systems.
         - Adaptive Resampling in GNN.
         - Meta Paths in Heterogeneous Graph Networks.
         - Anti-Money Laundering Detection
+        
 ### 6 Application in Financial Fraud Detection
 
 - Credit Card Fraud Detection
