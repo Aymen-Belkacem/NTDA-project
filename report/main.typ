@@ -223,8 +223,6 @@ Deprez et al. @deprez_advances_2025 operationalize money laundering typologies a
 
 == Technical foundations of Graph Neural Networks
 
-== Technical foundations <sec:foundations>
-
 Standard message passing has theoretical limits: some graph problems cannot
 be solved by it on the given input graph @velickovic_message_2022. This
 matters in fraud detection, because laundering patterns are often small
@@ -261,8 +259,7 @@ rather than accuracy @yue_adaptive_2026 @endah_eka_setiawati_graph_2026
 
 #figure(
   caption: [Technical challenges of GNNs for fraud detection and representative remedies.],
-  placement: top,
-  scope: "parent",
+  placement: none,
   table(
     columns: (auto, 1fr, 1fr, 1fr),
     align: left,
@@ -278,9 +275,8 @@ rather than accuracy @yue_adaptive_2026 @endah_eka_setiawati_graph_2026
   ),
 ) <tab:tech_challenges>
 
-
-
 == Financial Fraud
+
 
 Financial fraud covers a wide family of deliberate schemes designed to obtain
 money illegally, and classic surveys organize it by application domain and by
@@ -304,10 +300,19 @@ network @wang_phishing_2022. Finally, e-commerce platforms must score incoming
 transactions among many different entity types, at very large scale
 @rao_xfraud_2021 @lu_bright_2022.
 
+Across these scenarios, four obstacles keep coming back. Fraudsters imitate
+normal behavior to escape detection @dou_enhancing_2020, fraud examples are
+extremely rare compared with normal ones @liu_pick_2021, criminals constantly
+adapt their tactics, which forces models to keep learning over time
+@deprez_advances_2025, and banks need fast decisions together with
+explanations that regulators can audit @rao_xfraud_2021
+@khanvilkar_regulatory_2025. In collusion rings, confirmed labels may even
+arrive months after the facts @jiao_dynamic_2026. These obstacles motivate the
+technical choices described in the next section.
+
 #figure(
   caption: [Main financial fraud scenarios studied with graph learning.],
-  placement: top,
-  scope: "parent",
+  placement: none,
   table(
     columns: (auto, 1fr, 1fr, 1fr),
     align: left,
@@ -321,15 +326,6 @@ transactions among many different entity types, at very large scale
   ),
 ) <tab:fraud_scenarios>
 
-Across these scenarios, four obstacles keep coming back. Fraudsters imitate
-normal behavior to escape detection @dou_enhancing_2020, fraud examples are
-extremely rare compared with normal ones @liu_pick_2021, criminals constantly
-adapt their tactics, which forces models to keep learning over time
-@deprez_advances_2025, and banks need fast decisions together with
-explanations that regulators can audit @rao_xfraud_2021
-@khanvilkar_regulatory_2025. In collusion rings, confirmed labels may even
-arrive months after the facts @jiao_dynamic_2026. These obstacles motivate the
-technical choices described in the next section.
 
 == Taxonomy of GNN-Based Approaches <sec:taxonomy>
 // Following @motie2024financial, existing models can be grouped into four families
