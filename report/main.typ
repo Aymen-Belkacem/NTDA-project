@@ -222,16 +222,114 @@ Deprez et al. @deprez_advances_2025 operationalize money laundering typologies a
 
 
 == Technical foundations of Graph Neural Networks
-// TODO: message passing, GCN, GAT, heterogeneous GNNs, graph transformers.
-#lorem(60)
 
-A faire par Shehrazade
+== Technical foundations <sec:foundations>
+
+Standard message passing has theoretical limits: some graph problems cannot
+be solved by it on the given input graph @velickovic_message_2022. This
+matters in fraud detection, because laundering patterns are often small
+directed subgraphs. Simple adaptations such as port numbering, ego IDs, and
+reverse message passing allow a standard GNN to detect any directed subgraph
+pattern and improve laundering detection @egressy_provably_2024. This link
+between fraud and subgraph shapes also explains why some work classifies whole
+subgraphs instead of single nodes @bellei_shape_2024 @liu_graph_2023.
+
+Financial graphs are rarely simple. They contain several node and edge types,
+so message passing must be extended to heterogeneous graphs, with a dedicated
+way to aggregate messages across edge types @johannessen_finding_2023. Two
+accounts may also be linked by many transfers, and neighbor-aware aggregation
+keeps the information of repeated interactions @bilgi_mega_2026. Moreover,
+graphs evolve: models therefore work on sequences of snapshots or use temporal
+attention and recurrent units to follow the changes
+@cheng_graph_2022 @kulkarni_dynberg_2025 @yue_adaptive_2026. A related
+precaution is to avoid future information during message passing and to split
+data chronologically @lu_bright_2022 @yue_adaptive_2026.
+
+Three further issues are specific to fraud. First, deep aggregation can
+over-smooth representations and mix suspicious nodes with their benign
+neighbors, which high-order representation learning tries to avoid
+@zou_effective_2024. Second, camouflage hides fraudsters, both in their
+features and in their relations, and camouflage-resistant selection of
+neighbors was designed against it @dou_enhancing_2020. From a spectral point
+of view, anomalies shift the energy toward high frequencies, which motivates
+band-pass filters @tang_rethinking_nodate. Third, fraud labels are extremely
+imbalanced, so models rely on dedicated sampling and loss functions
+@liu_pick_2021 @sha_detecting_2025. For the same reason, evaluation uses
+imbalance-sensitive measures such as F1-score, average precision, or PR-AUC
+rather than accuracy @yue_adaptive_2026 @endah_eka_setiawati_graph_2026
+@chen_finfraudbench_2026. @tab:tech_challenges summarizes these points.
+
+#figure(
+  caption: [Technical challenges of GNNs for fraud detection and representative remedies.],
+  placement: top,
+  scope: "parent",
+  table(
+    columns: (auto, 1fr, 1fr, 1fr),
+    align: left,
+    inset: (x: 6pt, y: 4pt),
+    stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
+    table.header[Challenge][Why It Matters in Fraud][Representative Remedy][Examples],
+    [*Limited expressivity*], [Laundering patterns are directed subgraphs], [Port numbers, ego IDs, reverse messages], [@egressy_provably_2024 @velickovic_message_2022],
+    [*Rich graph types*], [Many entity types and repeated transfers], [Heterogeneous and multigraph aggregation], [@johannessen_finding_2023 @bilgi_mega_2026],
+    [*Time dynamics*], [Behavior and tactics change], [Snapshots, temporal attention, recurrent units], [@cheng_graph_2022 @kulkarni_dynberg_2025],
+    [*Over-smoothing*], [Fraudsters blend with normal neighbors], [High-order pure representations], [@zou_effective_2024],
+    [*Camouflage*], [Fraudsters imitate normal users], [Careful neighbor selection, spectral filters], [@dou_enhancing_2020 @tang_rethinking_nodate],
+    [*Class imbalance*], [Fraud is extremely rare], [Imbalance-aware sampling and losses], [@liu_pick_2021 @sha_detecting_2025],
+  ),
+) <tab:tech_challenges>
+
+
 
 == Financial Fraud
-// TODO: fraud types (money laundering, credit card fraud, insurance, tax evasion...).
-#lorem(60)
 
-A faire par Shehrazade
+Financial fraud covers a wide family of deliberate schemes designed to obtain
+money illegally, and classic surveys organize it by application domain and by
+detection technique @abdallah_fraud_2016 @ahmed_survey_2016
+@irofti_quick_2019. Graph-based surveys focus on three main scenarios: credit
+card fraud, insurance fraud, and money laundering @li_graph_2025. We add two
+further settings that appear often in the GNN literature, namely e-commerce
+transaction fraud and phishing on blockchains, and summarize all of them in
+@tab:fraud_scenarios.
+
+In credit card fraud, criminals disguise illegal payments by routing them
+through several honest users, which makes the fraud hard to see in a single
+transaction @zou_effective_2024. In anti-money laundering (AML), banks must
+monitor huge volumes of transfers, while rule-based systems remain imprecise
+and criminals often work together
+@johannessen_finding_2023 @deprez_advances_2025. The cost of this regulation
+and the openness of cryptocurrencies also made Bitcoin a popular testbed for
+forensic analysis @weber_anti-money_2019. Phishing on Ethereum can likewise be
+treated as a graph problem, where addresses and their transfers form the
+network @wang_phishing_2022. Finally, e-commerce platforms must score incoming
+transactions among many different entity types, at very large scale
+@rao_xfraud_2021 @lu_bright_2022.
+
+#figure(
+  caption: [Main financial fraud scenarios studied with graph learning.],
+  placement: top,
+  scope: "parent",
+  table(
+    columns: (auto, 1fr, 1fr, 1fr),
+    align: left,
+    inset: (x: 6pt, y: 4pt),
+    stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
+    table.header[Scenario][Graph Structure][Main Difficulty][Examples],
+    [*Credit card fraud*], [Cardholders, merchants and transactions], [Fraud hidden behind legitimate transactions, scarce labels], [@zou_effective_2024 @xiang_semi-supervised_2023],
+    [*Money laundering (AML)*], [Accounts and transfers, in banks or on blockchains], [Cooperating criminals, late labels, weak rule-based systems], [@johannessen_finding_2023 @weber_anti-money_2019],
+    [*Phishing on blockchain*], [Addresses and transactions on Ethereum], [Imitation of normal addresses], [@wang_phishing_2022 @egressy_provably_2024],
+    [*E-commerce fraud*], [Many typed entities in transaction logs], [Scale, low latency, need for explanations], [@rao_xfraud_2021 @lu_bright_2022],
+  ),
+) <tab:fraud_scenarios>
+
+Across these scenarios, four obstacles keep coming back. Fraudsters imitate
+normal behavior to escape detection @dou_enhancing_2020, fraud examples are
+extremely rare compared with normal ones @liu_pick_2021, criminals constantly
+adapt their tactics, which forces models to keep learning over time
+@deprez_advances_2025, and banks need fast decisions together with
+explanations that regulators can audit @rao_xfraud_2021
+@khanvilkar_regulatory_2025. In collusion rings, confirmed labels may even
+arrive months after the facts @jiao_dynamic_2026. These obstacles motivate the
+technical choices described in the next section.
 
 == Taxonomy of GNN-Based Approaches <sec:taxonomy>
 // Following @motie2024financial, existing models can be grouped into four families
