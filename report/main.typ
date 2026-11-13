@@ -85,8 +85,6 @@ The remainder of this paper is organized as follows. (A REVOIR A LA FIN)
 
 == Background <sec:background>
 
-== Background <sec:background>
-
 To uncover coordinated fraud, Graph Neural Networks (GNNs) first organize raw
 transaction records into a directed network, formally written as a graph
 $cal(G) = (cal(V), cal(E))$ @bronstein_geometric_2021 @li_graph_2025. In this
@@ -107,7 +105,7 @@ interacts with. At each step (or layer) $k$, every node $v$ gathers information
 from its immediate neighbors $cal(N)(v)$, aggregates those signals using a
 simple operation like a sum or average, and updates its own internal risk
 representation $bold(h)_v^((k))$:
-$ bold(h)_v^((k)) = "UPDATE"^((k)) ( bold(h)_v^((k-1)), plus.circle_(u in cal(N)(v)) "MSG"^((k))(bold(h)_u^((k-1)), bold(h)_v^((k-1)), bold(x)_(u v)) ) $
+$ bold(h)_v^((k)) = "UPDATE"^((k)) ( bold(h)_v^((k-1)), plus.o_(u in cal(N)(v)) "MSG"^((k))(bold(h)_u^((k-1)), bold(h)_v^((k-1)), bold(x)_(u v)) ) $
 Here, $"MSG"$ extracts the relevant signal from each neighbor $u$ and edge
 $bold(x)_(u v)$, $plus.circle$ combines all incoming messages regardless of
 their order, and $"UPDATE"$ merges this neighborhood context with the node's
