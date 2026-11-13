@@ -85,7 +85,6 @@ The remainder of this paper is organized as follows. (A REVOIR A LA FIN)
 
 == Background <sec:background>
 
-== Background <sec:background>
 
 To uncover coordinated fraud, Graph Neural Networks (GNNs) first organize raw
 transaction records into a directed network, formally written as a graph
