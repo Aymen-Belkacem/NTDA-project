@@ -72,11 +72,7 @@ Questions (RQs):
   and what next-generation approaches can go beyond them to improve real-world
   fraud detection?
 
-The remainder of this paper is organized as follows. Section 2 details our
-methodology, covering the types of financial fraud, existing surveys, GNN
-technical foundations, our taxonomy, and benchmark datasets. Section 3 compares
-empirical results across the literature. Section 4 discusses the limits of
-GNNs and future directions beyond them. Finally, Section 5 concludes the paper.
+The remainder of this paper is organized as follows. (A REVOIR A LA FIN)
 
 
 
