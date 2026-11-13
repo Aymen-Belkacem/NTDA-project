@@ -107,13 +107,13 @@ simple operation like a sum or average, and updates its own internal risk
 representation $bold(h)_v^((k))$:
 $ bold(h)_v^((k)) = "UPDATE"^((k)) ( bold(h)_v^((k-1)), plus.o_(u in cal(N)(v)) "MSG"^((k))(bold(h)_u^((k-1)), bold(h)_v^((k-1)), bold(x)_(u v)) ) $
 Here, $"MSG"$ extracts the relevant signal from each neighbor $u$ and edge
-$bold(x)_(u v)$, $plus.circle$ combines all incoming messages regardless of
-their order, and $"UPDATE"$ merges this neighborhood context with the node's
-previous state $bold(h)_v^((k-1))$. Repeating this process across $K$ layers
-allows information to travel $K$ steps across the network, revealing indirect
-money laundering chains, while graph pooling operators can compress an entire
-group of connected nodes into a single representation to flag collective fraud
-rings @liu_graph_2023 @bellei_shape_2024.
+$bold(x)_(u v)$, $plus.o$ combines all incoming messages regardless of their
+order, and $"UPDATE"$ merges this neighborhood context with the node's previous
+state $bold(h)_v^((k-1))$. Repeating this process across $K$ layers allows
+information to travel $K$ steps across the network, revealing indirect money
+laundering chains, while graph pooling operators can compress an entire group
+of connected nodes into a single representation to flag collective fraud rings
+@liu_graph_2023 @bellei_shape_2024.
 
 #figure(
   block(
