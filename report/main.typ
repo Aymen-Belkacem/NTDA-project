@@ -30,14 +30,54 @@
 #set text(lang: "en")
 
 = Introduction
-// TODO: motivation (cost of financial fraud), why graphs, contributions of this review.
 
-A faire par Shehrazade
 
-Graph neural networks (GNNs) have become a prominent approach for financial fraud
-detection. A recent systematic review analysed 33 articles and
-called for further work on dynamic and heterogeneous graphs, particularly in
-cross-domain applications.
+As financial services move online—from instant mobile payments to
+cryptocurrencies—financial fraud has evolved from isolated incidents into
+highly coordinated criminal networks @abdallah_fraud_2016 @ahmed_survey_2016.
+Today, fraudsters split stolen funds across dozens of accounts, share devices,
+and route money through complex chains of intermediaries to stay invisible.
+Traditional defense systems, such as manual rules and classic machine learning
+models (like Random Forests or XGBoost), struggle to catch these schemes
+because they inspect each transaction in isolation, like looking at a single
+puzzle piece without seeing the whole picture @weber_anti-money_2019
+@pei_subgraph_2020. Graph Neural Networks (GNNs) change this perspective by
+connecting the dots @scarselli_graph_2009 @wu_graph_2022: by mapping accounts,
+merchants, and devices as nodes and transfers as links, GNNs naturally uncover
+hidden collusion rings that single-transaction models miss @li_graph_2025.
+
+However, applying GNNs to real-world banking still faces major hurdles.
+Fraudsters deliberately camouflage themselves by interacting with normal users
+@dou_enhancing_2020, fraudulent transactions remain extremely rare
+@liu_pick_2021, criminal tactics evolve rapidly over time @yue_adaptive_2026,
+and banks need fast decisions alongside clear explanations for regulators
+@lu_bright_2022 @rao_xfraud_2021. While recent surveys catalog existing GNN
+fraud detectors @motie_financial_2024 @cheng_graph_2025 @li_graph_2025, they
+rarely highlight what GNNs still cannot achieve alone. In this review, we go
+one step further by examining these practical limits and showcasing emerging
+solutions beyond standard GNNs—such as combining GNNs with tabular models
+@dintakurthy_multisource_2026, temporal graph transformers
+@kulkarni_dynberg_2025 @chen_real-time_2026, continual learning
+@deprez_advances_2025, and Large Language Models (LLMs) to explain alerts to
+regulators @khanvilkar_regulatory_2025.
+
+Following our review structure, this paper addresses three core Research
+Questions (RQs):
+- *RQ1 (Methodology & Taxonomy):* How can existing GNN approaches for
+  financial fraud detection be organized into a clear taxonomy, and what
+  benchmark datasets are used to evaluate them?
+- *RQ2 (Results):* How do different GNN models compare in practice on public
+  benchmarks, and what gaps remain in current evaluation protocols?
+- *RQ3 (Discussion — Beyond GNNs):* What are the main limits of current GNNs,
+  and what next-generation approaches can go beyond them to improve real-world
+  fraud detection?
+
+The remainder of this paper is organized as follows. Section 2 details our
+methodology, covering the types of financial fraud, existing surveys, GNN
+technical foundations, our taxonomy, and benchmark datasets. Section 3 compares
+empirical results across the literature. Section 4 discusses the limits of
+GNNs and future directions beyond them. Finally, Section 5 concludes the paper.
+
 
 
 
