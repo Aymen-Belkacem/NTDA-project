@@ -1,11 +1,13 @@
 #import "@preview/charged-ieee:0.1.4": ieee
 
+#set page(numbering: "1/1")
+
 #show: ieee.with(
   title: [A state of the art of GNN architectures applied to transaction networks to identify illegal financial rings, structuring, and complex multi-node fraud],
   abstract: [
     // TODO: write the abstract last (150–250 words): context, scope of the review,
     // method (databases, number of papers), main findings, open challenges.
-    #lorem(60)
+    
   ],
   authors: (
     (
@@ -247,11 +249,11 @@ Multiple research papers with similar research questions have been published in 
     [Heterogeneous graphs], [Under-studied (about 30% of studies)], [Dedicated HGNN family (meta-paths, attention)], [Homogeneous graphs only],
     [Label scarcity and imbalance], [Calls for unsupervised and semi-supervised methods], [Resampling, cost-sensitive learning, augmentation, pre-training], [0.1% laundering (IBM AML); joint training collapses to the majority class],
     [Dominant backbones], [GCN, GraphSAGE, GAT], [GCN, GAT], [GCN (only backbone tested)],
-    [Reference dataset], [Elliptic (7 of 25 papers with public data)], [Elliptic], [Elliptic, IBM AML],
+    [Reference dataset], [Elliptic], [Elliptic], [Elliptic, IBM AML],
   )
 ) <tab:convergences>
 
-All three reviews agree: collective fraud detection (groups, communities, subgraphs) remains a gap. GNN-based financial fraud detection is overwhelmingly framed as node-level and, occasionally, edge-level detection. Motie and Raahemi @motie_financial_2024 state explicitly that no reviewed paper covered graph-level anomaly detection or the detection of abnormal communities, although such anomalies are typical in finance.
+All three reviews agree that collective fraud detection (groups, communities, subgraphs) remains a gap. GNN-based financial fraud detection is overwhelmingly framed as node-level and, occasionally, edge-level detection. Motie and Raahemi @motie_financial_2024 state explicitly that no reviewed paper covered graph-level anomaly detection or the detection of abnormal communities, although such anomalies are typical in finance.
 
 Deprez et al. @deprez_advances_2025 operationalize money laundering typologies as labels (the 8 patterns of the IBM AML dataset: fan-in, fan-out, bipartite, stack, cycle, random, scatter-gather, gather-scatter). However, each transaction is still classified individually with its pattern label, and the model never outputs a ring or a pattern as an object. In 2025, multi-node pattern detection is therefore still approached through an edge-level proxy, not through genuine subgraph detection.
 
@@ -376,19 +378,15 @@ technical choices described in the next section.
 A faire par Aymen
 
 === Convolutional-Based Models
-#lorem(50)
 A faire par Aymen
 
 === Attention-Based Models
-#lorem(50)
 A faire par Aymen
 
 === Metapath-Based Models
-#lorem(50)
 A faire par Aymen
 
 === Transformer-Based Models
-#lorem(50)
 A faire par Aymen
 
 
@@ -458,10 +456,10 @@ timestamps, but only 1,165 addresses are labeled as phishing, from reports on
 Etherscan. It serves as the real-data test for multigraph GNNs
 @egressy_provably_2024 @bilgi_mega_2026.
 
-*Synthetic AML datasets.* Real bank transfers are confidential, so
+*Synthetic AML datasets.* Real bank transfers are usually confidential, so
 pattern-level AML research relies on simulators. AMLSim
 @suzumura_amlsim_2021 is an open-source multi-agent simulator from IBM that
-injects known laundering patterns into synthetic bank transactions; it was
+injects known laundering patterns into synthetic bank transactions. It was
 used, for example, to generate graphs of 100K and 1M accounts
 @silva_efficient_2026. The IBM AML datasets @altman_realistic_2023 come from a
 more realistic generator: it models individuals, companies, and banks, and
@@ -482,7 +480,7 @@ designed to find, so results may not transfer to real data.
 per account (e.g., registration days and login activity). Experts labeled
 4.58% of the accounts as anomalous, for fraud, money laundering, or online
 gambling. DGraph @huang_dgraph_2022 comes from Finvolution, a Chinese consumer
-lending platform: its 3,700,550 nodes are users and its 4,300,999 directed,
+lending platform. Its 3,700,550 nodes are users and its 4,300,999 directed,
 timestamped edges are emergency-contact links. Only 1,225,601 users are
 labeled, of which 15,509 (1.3%) are fraudsters; the remaining 2.5M nodes are
 unlabeled background users kept to preserve the structure. Both graphs are
@@ -509,13 +507,13 @@ payments, of which 7,200 are fraudulent) @dintakurthy_multisource_2026.
 Because each paper chooses its own nodes and edges, results on these datasets
 are hard to compare.
 
-Two observations follow. First, no public dataset combines real bank
+Two general observations can be made. First, no public dataset combines real bank
 transfers with group-level labels: the only subgraph labels (Elliptic2) come
 from a heuristic on Bitcoin data, and the only typology labels (IBM AML,
 AMLSim) are synthetic. Studies on real bank data use private graphs
 @johannessen_finding_2023. Second, all datasets are highly imbalanced, with
-0.05% to 4.6% positives, which explains why recent work reports PR-AUC or
-minority-class F1 rather than accuracy.
+0.05% to 4.6% positives. Consequently recent work reports PR-AUC or
+minority-class F1 rather than accuracy as a metric.
 
 = Results
 
@@ -527,7 +525,6 @@ Tableau de resultats: Shehrazade
 = Open Challenges and Future Directions <sec:challenges>
 // TODO: edge- and graph-level anomaly detection; unsupervised and semi-supervised
 // learning; dataset scarcity (taxation, real estate, mortgage); dynamic graphs.
-#lorem(80)
 
 A faire par 
 
