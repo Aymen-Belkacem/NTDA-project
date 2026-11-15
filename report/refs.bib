@@ -165,7 +165,9 @@
 	pages = {1--8},
 }
 
-@misc{bellei_shape_2024,
+@inproceedings{bellei_shape_2024,
+	booktitle = {KDD Workshop on Machine Learning in Finance (KDD MLF '24)},
+	address = {Barcelona, Spain},
 	title = {The {Shape} of {Money} {Laundering}: {Subgraph} {Representation} {Learning} on the {Blockchain} with the {Elliptic2} {Dataset}},
 	shorttitle = {The {Shape} of {Money} {Laundering}},
 	url = {http://arxiv.org/abs/2404.19109},
@@ -217,6 +219,7 @@
 @article{yue_adaptive_2026,
 	title = {Adaptive {Temporal} {Graph} {Neural} {Networks} for {Real}-{Time} {Financial} {Fraud} {Detection} under {Concept} {Drift}},
 	volume = {69},
+	journal = {Highlights in Business, Economics and Management},
 	abstract = {Financial fraud detectors operate in a non-stationary environment in which illicit actors adapt, class prevalence changes, and labels arrive after investigation. This paper proposes ATGNNSP, a drift-gated stable-plastic temporal graph neural network for real-time-compatible fraud scoring. Each directed transaction snapshot is converted into a 133-dimensional representation by a two-hop simplified graph convolution that separately propagates incoming, outgoing, second-order, and cross-direction information. A frozen stable multilayer perceptron preserves the initial concept, while a plastic copy is updated only when delayed prequential log loss exceeds a validation-derived control limit. Recent snapshots provide rapid adaptation and an anchor replay buffer limits forgetting. Experiments are executed on the real Elliptic Bitcoin transaction graph using a strict chronological protocol: time steps 1-29 for initial training, 30-34 for validation, and 35-49 for predict-then-update testing. Across three seeds, ATGNN-SP reaches F1 0.2649+/-0.0092 and average precision 0.2624+/-0.0193, improving the static graph MLP by 4.27\% and 5.43\% relative, respectively. A graph-aware gradient-boosting baseline obtains a slightly higher F1 of 0.2714, which is reported explicitly. The accompanying artifact contains all code, logs, and unedited result files; no experimental metric is synthesized or manually altered.},
 	language = {en},
 	author = {Yue, Xinran and Yang, Jingyun and Zhu, Rufeng and Xu, Qiao},
@@ -370,8 +373,8 @@
 	urldate = {2026-10-10},
 	journal = {Journal of Computing and Data Technology},
 	author = {Dintakurthy, Yeswanth},
-	month = sep,
-	year = {2026},
+	month = nov,
+	year = {2025},
 	pages = {36--42},
 	file = {PDF:C\:\\Users\\aymen\\Zotero\\storage\\9QY6NEZG\\Dintakurthy - 2026 - Multisource Fraud Intelligence Using Graph Neural Networks for Merchant, Account, and Transaction Ri.pdf:application/pdf},
 }
@@ -394,8 +397,15 @@
 	file = {PDF:C\:\\Users\\aymen\\Zotero\\storage\\C2KP5JY8\\Xiang et al. - 2023 - Semi-supervised Credit Card Fraud Detection via Attribute-Driven Graph Representation.pdf:application/pdf},
 }
 
-@article{tang_rethinking_nodate,
+@inproceedings{tang_rethinking_nodate,
 	title = {Rethinking {Graph} {Neural} {Networks} for {Anomaly} {Detection}},
+	booktitle = {Proceedings of the 39th {International} {Conference} on {Machine} {Learning} ({ICML})},
+	series = {Proceedings of {Machine} {Learning} {Research}},
+	volume = {162},
+	pages = {21076--21089},
+	publisher = {PMLR},
+	year = {2022},
+	url = {https://proceedings.mlr.press/v162/tang22b.html},
 	abstract = {Graph Neural Networks (GNNs) are widely applied for graph anomaly detection. As one of the key components for GNN design is to select a tailored spectral filter, we take the first step towards analyzing anomalies via the lens of the graph spectrum. Our crucial observation is the existence of anomalies will lead to the ‘rightshift’ phenomenon, that is, the spectral energy distribution concentrates less on low frequencies and more on high frequencies. This fact motivates us to propose the Beta Wavelet Graph Neural Network (BWGNN). Indeed, BWGNN has spectral and spatial localized band-pass filters to better handle the ‘right-shift’ phenomenon in anomalies. We demonstrate the effectiveness of BWGNN on four large-scale anomaly detection datasets. Our code and data are released at https://github.com/squareRoot3/ Rethinking-Anomaly-Detection.},
 	language = {en},
 	author = {Tang, Jianheng and Li, Jiajin and Gao, Ziqi and Li, Jia},
@@ -706,18 +716,17 @@ Accepted by CIKM 2020},
 	pages = {662--672},
 }
 
-@misc{bilgi_mega_2026,
+@article{bilgi_mega_2026,
 	title = {{MEGA}: {Message} {Passing} {Neural} {Networks} for {Multigraphs} with {EdGe} {Attributes}},
 	shorttitle = {{MEGA}},
-	url = {http://arxiv.org/abs/2412.00241},
-	doi = {10.48550/arXiv.2412.00241},
+	journal = {Transactions on Machine Learning Research},
+	url = {https://openreview.net/forum?id=Jo4KBvnMIP},
 	abstract = {Edge-attributed multigraphs, in which multiple edges with distinct attributes connect the same pair of nodes, arise naturally in many real-world systems. In these graphs, effective learning requires preserving information from repeated interactions while distinguishing contributions from different neighbors. Existing neural network solutions for edge-attributed multigraphs remain limited: some lose information from repeated interactions, while others break permutation equivariance. To address this, we introduce {\textbackslash}emph\{neighbor-aware aggregation\}, an operator that first combines multi-edge features for each neighbor and then aggregates across neighbors. This operator captures per-neighbor statistics that standard single-stage aggregation cannot represent. Building on this operator, we present MEGA-GNN, a model-agnostic message-passing framework for edge-attributed multigraphs. We show that MEGA-GNN is permutation equivariant and has the same asymptotic complexity as standard GNNs with edge updates. We evaluate our approach on datasets from social networks and financial transaction networks. Neighbor-aware aggregation consistently improves GNN performance and matches or surpasses state-of-the-art methods.},
 	urldate = {2026-11-07},
-	publisher = {arXiv},
 	author = {Bilgi, H. Çağrı and Atasu, Kubilay},
 	month = aug,
 	year = {2026},
-	note = {arXiv:2412.00241 [cs.LG]},
+	note = {Preprint: arXiv:2412.00241},
 	keywords = {Computer Science - Machine Learning},
 	annote = {Comment: Accepted for publication in TMLR, 2026},
 	file = {Preprint PDF:C\:\\Users\\aymen\\Zotero\\storage\\X55PPRDP\\Bilgi et Atasu - 2026 - MEGA Message Passing Neural Networks for Multigraphs with EdGe Attributes.pdf:application/pdf;Snapshot:C\:\\Users\\aymen\\Zotero\\storage\\KK5K2E45\\2412.html:text/html},
@@ -737,4 +746,84 @@ Accepted by CIKM 2020},
 	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning},
 	annote = {Comment: AAAI 2024},
 	file = {Preprint PDF:C\:\\Users\\aymen\\Zotero\\storage\\ALMDFMNW\\Egressy et al. - 2024 - Provably Powerful Graph Neural Networks for Directed Multigraphs.pdf:application/pdf;Snapshot:C\:\\Users\\aymen\\Zotero\\storage\\2I77UN2B\\2306.html:text/html},
+}
+
+% ---------------------------------------------------------------------------
+% Dataset sources (added 2026-11-15)
+% ---------------------------------------------------------------------------
+
+@misc{elliptic_elliptic2_2024,
+	author = {{Elliptic}},
+	title = {{Elliptic2}: {A} Large Financial Crime-Focussed Graph Dataset with Labeled Subgraphs},
+	howpublished = {Kaggle dataset},
+	publisher = {Kaggle},
+	url = {https://www.kaggle.com/datasets/ellipticco/elliptic2-data-set},
+	urldate = {2026-11-15},
+	year = {2024},
+	note = {License CC BY-NC-ND 4.0},
+}
+
+@inproceedings{altman_realistic_2023,
+	title = {Realistic Synthetic Financial Transactions for Anti-Money Laundering Models},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems} 36 ({NeurIPS} 2023), Datasets and Benchmarks Track},
+	author = {Altman, Erik and Blanuša, Jovan and von Niederhäusern, Luc and Egressy, Béni and Anghel, Andreea and Atasu, Kubilay},
+	year = {2023},
+	url = {http://arxiv.org/abs/2306.16424},
+	doi = {10.48550/arXiv.2306.16424},
+}
+
+@inproceedings{huang_dgraph_2022,
+	title = {{DGraph}: {A} Large-Scale Financial Dataset for Graph Anomaly Detection},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems} 35 ({NeurIPS} 2022)},
+	author = {Huang, Xuanwen and Yang, Yang and Wang, Yang and Wang, Chunping and Zhang, Zhisheng and Xu, Jiarong and Chen, Lei and Vazirgiannis, Michalis},
+	year = {2022},
+	url = {http://arxiv.org/abs/2207.03579},
+	doi = {10.48550/arXiv.2207.03579},
+}
+
+@misc{suzumura_amlsim_2021,
+	title = {Anti-Money Laundering Datasets: {InPlusLab} Anti-Money Laundering Data ({AMLSim})},
+	author = {Suzumura, Toyotaro and Kanezashi, Hiroki},
+	howpublished = {GitHub repository},
+	url = {https://github.com/IBM/AMLSim},
+	urldate = {2026-11-15},
+	year = {2021},
+}
+
+@article{wu_who_2022,
+	title = {Who Are the Phishers? {Phishing} Scam Detection on {Ethereum} via Network Embedding},
+	journal = {IEEE Transactions on Systems, Man, and Cybernetics: Systems},
+	author = {Wu, Jiajing and Yuan, Qi and Lin, Dan and You, Wei and Chen, Weili and Chen, Chuan and Zheng, Zibin},
+	volume = {52},
+	number = {2},
+	pages = {1156--1166},
+	year = {2022},
+	doi = {10.1109/TSMC.2020.3016821},
+}
+
+@misc{ieee-cis_fraud_2019,
+	author = {{IEEE Computational Intelligence Society} and {Vesta Corporation}},
+	title = {{IEEE-CIS} Fraud Detection},
+	howpublished = {Kaggle competition},
+	publisher = {Kaggle},
+	url = {https://www.kaggle.com/competitions/ieee-fraud-detection},
+	urldate = {2026-11-15},
+	year = {2019},
+}
+
+@inproceedings{lopez-rojas_paysim_2016,
+	title = {{PaySim}: {A} Financial Mobile Money Simulator for Fraud Detection},
+	booktitle = {Proceedings of the 28th {European} {Modeling} and {Simulation} {Symposium} ({EMSS})},
+	address = {Larnaca, Cyprus},
+	author = {Lopez-Rojas, Edgar Alonso and Elmir, Ahmad and Axelsson, Stefan},
+	year = {2016},
+}
+
+@inproceedings{lopez-rojas_banksim_2014,
+	title = {{BankSim}: {A} Bank Payments Simulator for Fraud Detection Research},
+	booktitle = {Proceedings of the 26th {European} {Modeling} and {Simulation} {Symposium} ({EMSS})},
+	address = {Bordeaux, France},
+	author = {Lopez-Rojas, Edgar Alonso and Axelsson, Stefan},
+	pages = {144--152},
+	year = {2014},
 }

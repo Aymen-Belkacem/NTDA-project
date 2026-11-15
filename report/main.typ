@@ -11,11 +11,17 @@
     (
       name: "Aymen Belkacem",
       department: [TODO: Department],
-      organization: [TODO: University],
-      location: [TODO: City, Country],
-      email: "aymen.belkacem@gmail.com"
+      organization: [HES-SO],
+      location: [Lausanne, Switzerland],
+      email: "aymen.belkacem@hes-so.ch"
     ),
-    // Add co-authors here with the same structure.
+    (
+      name: "Sherazade Ligali",
+      department: [TODO: Department],
+      organization: [HES-SO],
+      location: [Lausanne, Switzerland],
+      email: "sherazade.ligali@hes-so.ch"
+    ),
   ),
   index-terms: (
     "Graph neural networks",
@@ -79,9 +85,35 @@ The remainder of this paper is organized as follows. (A REVOIR A LA FIN)
 
 
 = Methodology <sec:method>
-// TODO: research questions, databases searched, search query, inclusion/exclusion
-// criteria, PRISMA-style selection flow (records found -> screened -> included).
-#lorem(80)
+// TODO: research questions, databases searched, search query, inclusion/exclusion??
+// calude suggestion: criteria, PRISMA-style selection flow (records found -> screened -> included).
+
+
+== Use of Generative AI Tools <sec:ai_use>
+
+Here we disclose the use of generative AI tools during the preparation of this review (@tab:ai_use). These tools
+supported our work but did not replace it: the authors still selected,
+analysed, and checked AI outputs against the original papers. We
+take full responsibility for the content of this paper.
+
+#figure(
+  caption: [Use of generative AI tools during the preparation of this review.],
+  placement: none,
+  {
+  set par(justify: false)
+  table(
+    columns: (1fr, 0.9fr, 1.4fr),
+    align: left,
+    inset: (x: 5pt, y: 4pt),
+    stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
+    table.header[Task][AI Tool(s)][Role of the Authors],
+    [*Search and validation of sources*], [NotebookLM (Google), Perplexity], [Final inclusion decisions; each source checked in its original publication],
+    [*Synthesis and summary of sources*], [NotebookLM, Perplexity, Claude (Anthropic)], [Authors also read and summarized the papers themselves, then compared their own understanding with the different AI syntheses],
+    [*Retrieval of key facts and figures*], [Claude], [Figures checked against the cited paper],
+    [*Text editing and proofreading*], [Claude], [Arguments written by the authors; edits reviewed before acceptance],
+  )
+  },
+) <tab:ai_use>
 
 == Background <sec:background>
 
@@ -112,8 +144,12 @@ $bold(x)_(u v)$, $plus.o$ combines all incoming messages regardless of their
 order, and $"UPDATE"$ merges this neighborhood context with the node's previous
 state $bold(h)_v^((k-1))$. Repeating this process across $K$ layers allows
 information to travel $K$ steps across the network, revealing indirect money
-laundering chains, while graph pooling operators can compress an entire group
-of connected nodes into a single representation to flag collective fraud rings.
+laundering chains. To flag a whole group of accounts, the node representations
+of a candidate subgraph must then be combined into one representation. Simply
+pooling them is not sufficient: on the Elliptic2 benchmark, pooled node
+embeddings perform close to random, whereas marking which nodes belong to the
+subgraph and using the surrounding graph clearly improves subgraph
+classification @bellei_shape_2024.
 
 #figure(
   block(
@@ -186,14 +222,14 @@ learning.
     table.header[Paradigm][When to Use It][How It Learns][Key Examples],
     [*Supervised*], [Verified historical fraud labels are available], [Minimizes imbalance-aware classification loss], [GCN, PC-GNN],
     [*Semi-Supervised*], [Only a small fraction of transactions is labeled], [Propagates risk from labeled nodes to unlabeled neighbors], [GTAN],
-    [*Unsupervised*], [Zero fraud labels or unknown new attack patterns], [Detects abnormal subgraphs or contrastive mismatches], [Subgraph mining, Audit-HCL],
+    [*Unsupervised*], [Zero fraud labels or unknown new attack patterns], [Detects abnormal subgraphs or contrastive mismatches], [Subgraph mining @li_graph_2025, Audit-HCL @jiao_dynamic_2026],
   )
 ) <tab:learning_paradigms>
 
-== Existing review papers and  and limits 
+== Existing review papers and limits
 // TODO A faire par aymen, bientot fait
 
-Multiple research papers with similar ressearch questions have been published in the last 3 years @motie_financial_2024 @cheng_graph_2025 @deprez_advances_2025. In this section we synthesize their findings to establish a foundation for new developpements in the subject of fraud detection. Recurring themes and convergences across the reviews are summarized in @tab:convergences.
+Multiple research papers with similar research questions have been published in the last 3 years @motie_financial_2024 @cheng_graph_2025 @deprez_advances_2025. In this section we synthesize their findings to establish a foundation for new developments in the subject of fraud detection. Recurring themes and convergences across the reviews are summarized in @tab:convergences.
 
 #figure(
   caption: [Recurring themes across existing reviews],
@@ -215,7 +251,7 @@ Multiple research papers with similar ressearch questions have been published in
   )
 ) <tab:convergences>
 
-All three reviews agree; collective fraud detection (groups, communities, subgraphs) remains a gap. GNN-based financial is overwhelmingly framed as node-level and, occasionally, edge-level detection. Motie and Raahemi @motie_financial_2024 state explicitly that no reviewed paper covered graph-level anomaly detection or the detection of abnormal communities, although such anomalies are typical in finance.
+All three reviews agree: collective fraud detection (groups, communities, subgraphs) remains a gap. GNN-based financial fraud detection is overwhelmingly framed as node-level and, occasionally, edge-level detection. Motie and Raahemi @motie_financial_2024 state explicitly that no reviewed paper covered graph-level anomaly detection or the detection of abnormal communities, although such anomalies are typical in finance.
 
 Deprez et al. @deprez_advances_2025 operationalize money laundering typologies as labels (the 8 patterns of the IBM AML dataset: fan-in, fan-out, bipartite, stack, cycle, random, scatter-gather, gather-scatter). However, each transaction is still classified individually with its pattern label, and the model never outputs a ring or a pattern as an object. In 2025, multi-node pattern detection is therefore still approached through an edge-level proxy, not through genuine subgraph detection.
 
@@ -357,31 +393,129 @@ A faire par Aymen
 
 
 = Datasets <sec:datasets>
-// @tab:datasets summarises the main public graph datasets for financial fraud detection.
+// Draft (2026-11-15).
 
-A faire par Aymen
+Public datasets for graph-based fraud detection differ in their domain, in
+the level at which labels are given (node, edge, or subgraph), and in whether
+the data are real or simulated. @tab:datasets summarizes the datasets used by
+the studies reviewed in this paper.
 
-// #figure(
-//   caption: [Public graph datasets for financial fraud detection],
-//   placement: top,
-//   table(
-//     columns: (auto, auto, auto),
-//     align: (left, right, right),
-//     inset: (x: 6pt, y: 4pt),
-//     stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
-//     fill: (x, y) => if y > 0 and calc.rem(y, 2) == 0 { rgb("#efefef") },
+#figure(
+  caption: [Public datasets used for graph-based financial fraud detection.],
+  placement: top,
+  scope: "parent",
+  {
+  set par(justify: false)
+  set text(size: 8.5pt)
+  table(
+    columns: (auto, auto, auto, auto, auto, auto, 3.4cm),
+    align: left,
+    inset: (x: 5pt, y: 4pt),
+    stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
+    table.header[Dataset][Domain][Nodes / Edges][Label level][Positives][Data][Used in],
+    [*Elliptic* @weber_anti-money_2019], [Bitcoin], [204K / 234K], [Node (transaction)], [2% illicit], [Real], [@yue_adaptive_2026 @kulkarni_dynberg_2025 @deprez_advances_2025],
+    [*Elliptic2* @bellei_shape_2024], [Bitcoin], [49.3M / 196.2M], [Subgraph], [2.3% of 122K subgraphs], [Real, heuristic labels], [@bellei_shape_2024],
+    [*ETH phishing* @wu_who_2022], [Ethereum], [3.0M / 13.6M], [Node (address)], [1,165 addresses], [Real], [@egressy_provably_2024 @bilgi_mega_2026],
+    [*IBM AML* @altman_realistic_2023], [Bank transfers], [0.5–2.1M / 5–180M], [Edge + 8 patterns], [0.05–0.12%], [Synthetic], [@deprez_advances_2025 @egressy_provably_2024 @bilgi_mega_2026 @sumsuzzaman_graph_2026],
+    [*AMLSim* @suzumura_amlsim_2021], [Bank transfers], [Configurable], [Edge + patterns], [Configurable], [Synthetic], [@silva_efficient_2026],
+    [*T-Finance* @tang_rethinking_nodate], [Transactions], [39K / 21.2M], [Node (account)], [4.58%], [Real], [@tang_rethinking_nodate],
+    [*DGraph* @huang_dgraph_2022], [Consumer loans], [3.7M / 4.3M], [Node (user)], [1.3% of labeled users], [Real], [@huang_dgraph_2022],
+    [*FinFraudBench* @chen_finfraudbench_2026], [Card / bank payments], [up to 9.0M / 89.2M], [Node (transaction)], [0.15–0.52%], [Kaggle tables], [@chen_finfraudbench_2026],
+    [*IEEE-CIS* @ieee-cis_fraud_2019], [E-commerce], [Tabular (590K tx)], [Transaction], [3.5%], [Real], [@sha_detecting_2025 @nguyen_real-time_2025],
+    [*PaySim* @lopez-rojas_paysim_2016], [Mobile money], [Tabular (6.4M tx)], [Transaction], [0.13%], [Synthetic], [@nguyen_real-time_2025],
+    [*BankSim* @lopez-rojas_banksim_2014], [Card payments], [Tabular (595K tx)], [Transaction], [1.2%], [Synthetic], [@dintakurthy_multisource_2026],
+  )
+  },
+) <tab:datasets>
 
-//     table.header[Dataset][Nodes][Edges],
-//     [Elliptic], [203,769], [234,355],
-//     [Elliptic2 @bellei2024shape], [49M], [196M],
-//     [T-Finance], [39,357], [21,222,543],
-//     [DGraph], [TODO], [TODO],
-//     [FinFraudBench], [TODO], [TODO],
-//   )
-// ) <tab:datasets>
+*Cryptocurrency datasets.* Because blockchain data are public,
+cryptocurrencies provide most of the real labeled transaction graphs. The
+Elliptic dataset @weber_anti-money_2019 is a Bitcoin graph of 203,769
+transactions (nodes) linked by 234,355 directed payment flows (edges), with
+166 node features and 49 time steps. About 2% of the transactions are labeled
+illicit and 21% licit; the others are unknown. It is the most common benchmark
+in the GNN fraud literature @motie_financial_2024, but it only supports
+node-level classification.
 
-// TODO: describe each dataset (domain, labels, anomaly ratio, graph type).
-#lorem(80)
+Elliptic2 @bellei_shape_2024 @elliptic_elliptic2_2024 is, to our knowledge,
+the first large labeled benchmark for subgraph classification in finance. Each
+node is a cluster of Bitcoin addresses believed to be controlled by the same
+entity, and each edge is a transaction between two clusters. The background
+graph covers one year of blockchain activity, with 49.3M nodes, 196.2M edges,
+43 node features and 95 edge features. Inside it, 121,810 subgraphs are
+labeled: 2,763 (2.3%) are suspicious and the others licit. A subgraph is
+suspicious when it connects an illicit cluster to a licit one, which suggests
+an attempt to convert criminal proceeds into fiat money or other
+cryptocurrencies @elliptic_elliptic2_2024. These labels come from a path
+heuristic (at most six hops) and therefore indicate suspicion, not confirmed
+laundering @bellei_shape_2024. The intended task is binary subgraph
+classification, and the data are released on Kaggle under a non-commercial
+licence (CC BY-NC-ND 4.0).
+
+On Ethereum, the phishing network collected by Wu et al. @wu_who_2022
+contains 2,973,489 addresses and 13,551,303 transactions with amounts and
+timestamps, but only 1,165 addresses are labeled as phishing, from reports on
+Etherscan. It serves as the real-data test for multigraph GNNs
+@egressy_provably_2024 @bilgi_mega_2026.
+
+*Synthetic AML datasets.* Real bank transfers are confidential, so
+pattern-level AML research relies on simulators. AMLSim
+@suzumura_amlsim_2021 is an open-source multi-agent simulator from IBM that
+injects known laundering patterns into synthetic bank transactions; it was
+used, for example, to generate graphs of 100K and 1M accounts
+@silva_efficient_2026. The IBM AML datasets @altman_realistic_2023 come from a
+more realistic generator: it models individuals, companies, and banks, and
+follows illicit funds through any number of transfers, so that every
+transaction can be labeled. Six datasets are released, in two groups with a
+higher (HI) or lower (LI) laundering rate and three sizes each, from 515K
+accounts and 5M transactions (HI-Small) to about 2.1M accounts and 180M
+transactions (HI-Large). Only one transaction in 807 to 1,948 is laundering.
+Part of the laundering follows eight patterns (fan-in, fan-out, bipartite,
+stack, cycle, random, scatter-gather, and gather-scatter), listed in a
+separate file. IBM AML is therefore the reference dataset for pattern-aware
+models @egressy_provably_2024 @deprez_advances_2025 @bilgi_mega_2026.
+However, its labels are generated by the same patterns that these models are
+designed to find, so results may not transfer to real data.
+
+*Real fraud graphs with node labels.* T-Finance @tang_rethinking_nodate links
+39,357 anonymized accounts by 21,222,543 transaction edges, with 10 features
+per account (e.g., registration days and login activity). Experts labeled
+4.58% of the accounts as anomalous, for fraud, money laundering, or online
+gambling. DGraph @huang_dgraph_2022 comes from Finvolution, a Chinese consumer
+lending platform: its 3,700,550 nodes are users and its 4,300,999 directed,
+timestamped edges are emergency-contact links. Only 1,225,601 users are
+labeled, of which 15,509 (1.3%) are fraudsters; the remaining 2.5M nodes are
+unlabeled background users kept to preserve the structure. Both graphs are
+homogeneous. FinFraudBench @chen_finfraudbench_2026 keeps several entity
+types instead. Its two graphs, CreditCard-Fraud and BankTrans-Fraud, are built
+from public Kaggle transaction tables and contain six node types
+(transaction, customer, card, merchant, category, and location) and fourteen
+directed edge types, with up to 8.99M nodes, 89.23M edges, and natural fraud
+rates of 0.52% and 0.15%. Note that the credit-card table is itself simulated
+(Sparkov generator). YelpChi and Amazon, two review-fraud graphs, are also
+frequent in graph anomaly detection @dou_enhancing_2020 @liu_pick_2021, but
+they are not financial and are not detailed here.
+
+*Tabular datasets turned into graphs.* Several studies build their own graph
+from tabular transaction logs. IEEE-CIS @ieee-cis_fraud_2019 contains real
+e-commerce transactions provided by Vesta (about 590K labeled, 3.5% fraud),
+whose card, address, e-mail, and device fields are used to link transactions
+@sha_detecting_2025 @nguyen_real-time_2025. PaySim
+@lopez-rojas_paysim_2016 simulates one month of mobile-money transactions,
+calibrated on real logs from an African country (6.4M transactions in its
+Kaggle version, 0.13% fraud). BankSim @lopez-rojas_banksim_2014 simulates six
+months of card payments, calibrated on data from a Spanish bank (594,643
+payments, of which 7,200 are fraudulent) @dintakurthy_multisource_2026.
+Because each paper chooses its own nodes and edges, results on these datasets
+are hard to compare.
+
+Two observations follow. First, no public dataset combines real bank
+transfers with group-level labels: the only subgraph labels (Elliptic2) come
+from a heuristic on Bitcoin data, and the only typology labels (IBM AML,
+AMLSim) are synthetic. Studies on real bank data use private graphs
+@johannessen_finding_2023. Second, all datasets are highly imbalanced, with
+0.05% to 4.6% positives, which explains why recent work reports PR-AUC or
+minority-class F1 rather than accuracy.
 
 = Results
 
