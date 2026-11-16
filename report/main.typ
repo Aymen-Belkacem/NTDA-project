@@ -521,6 +521,22 @@ A faire par Shehrazade et Aymen
 
 Tableau de resultats: Shehrazade
 
+In this section we synthesize the results of 11 studies not covered by the recent review papers, all of them released since 2024.
+
+== From node scores to fraud structures.
+
+The main advance since the existing reviews is the appearance of models and data where laundering is treated as a structure rather than as a set of independent transactions.  Elliptic2 shows that a subgraph method that marks subgraph membership and uses the surrounding graph (GLASS) outperforms pooling node embeddings (PR-AUC 0.208 vs 0.026) @bellei_shape_2024.
+
+At the motif level, LAS-GNN extends ego-ID message passing to temporal motifs and detects the key accounts of cycles and scatter-gather schemes in synthetic networks @verlaan_-gnn_2025. On the other hand, MEGA preserves repeated transfers between the same pair of accounts and improves laundering detection on all IBM AML variants @bilgi_mega_2026. However, these models still output a score per node or per transaction in all banking settings. Groups have to be rebuilt afterwards, at the cost of rapidly decreasing purity @silva_efficient_2026.
+
+
+== No consistent advantage over tabular models.
+
+When recent studies compare GNNs with gradient boosting under a chronological split, the GNN does not win: tree models dominate on AMLSim @silva_efficient_2026, match the best temporal model on Elliptic @yue_adaptive_2026, and outperform a standalone GraphSAGE on BankSim, where only a fusion of both is best @dintakurthy_multisource_2026. Large GNN gains are reported mainly against weak or unequal baselines @nguyen_real-time_2025 @chen_real-time_2026.
+
+
+
+
 
 = Open Challenges and Future Directions <sec:challenges>
 // TODO: edge- and graph-level anomaly detection; unsupervised and semi-supervised
