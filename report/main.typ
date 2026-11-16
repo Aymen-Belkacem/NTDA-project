@@ -519,18 +519,50 @@ minority-class F1 rather than accuracy as a metric.
 
 A faire par Shehrazade et Aymen
 
-Tableau de resultats: Shehrazade
+// Tableau de resultats: Shehrazade (draft table inserted 2026-11-16)
 
-In this section we synthesize the results of 11 studies not covered by the recent review papers, all of them released since 2024.
+In this section we synthesize the results of 10 studies not covered by the recent review papers, all of them released since 2024. @tab:results lists the main results reported by each study.
 
-== From node scores to fraud structures.
+#figure(
+  caption: [Main results reported by recent studies (2024-2026). Values cannot be compared across rows because datasets, tasks and metrics differ. "Best baseline" is the strongest competing model reported by the authors; "private" means non-public industrial data.],
+  placement: top,
+  scope: "parent",
+  {
+  set par(justify: false)
+  set text(size: 8.5pt)
+  table(
+    columns: (auto, auto, auto, auto, auto, auto),
+    align: left,
+    inset: (x: 5pt, y: 4pt),
+    stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
+    table.header[Study][Dataset][Task][Metric][Proposed model][Best baseline],
+    [Bellei et al. @bellei_shape_2024], [Elliptic2], [Subgraph classification], [PR-AUC / ROC-AUC], [GLASS 0.208 / 0.889], [GNN-Seg 0.026 / 0.537; Sub2Vec 0.022 / 0.496],
+    [Verlaan et al. @verlaan_-gnn_2025], [Watts–Strogatz (synthetic)], [Temporal motif key nodes], [AP (GS / SG / C3)], [LAS-GNN 1.00 / 0.97 / 1.00], [GIN+Ego+HMP 0.86 / 0.86 / 0.86],
+    [Verlaan et al. @verlaan_-gnn_2025], [Watts–Strogatz (synthetic, balanced)], [Temporal 6-cycle key nodes], [F1], [LAS-GNN 0.87], [GIN+Ego+HMP 0.49],
+    [Bilgi and Atasu @bilgi_mega_2026], [IBM AML Medium-HI], [Edge classification], [Minority F1 (%)], [MEGA-PNA 78.26], [Multi-PNA 76.12],
+    [Bilgi and Atasu @bilgi_mega_2026], [IBM AML Large-LI], [Edge classification], [Minority F1 (%)], [MEGA-PNA 38.31], [Multi-FraudGT 35.49],
+    [Bilgi and Atasu @bilgi_mega_2026], [ETH phishing], [Node classification], [Minority F1 (%)], [MEGA-PNA 64.84], [Multi-PNA 64.61; DIAM 64.43],
+    [Silva and Lima de Castro @silva_efficient_2026], [AMLSim 100K accounts], [Edge ranking], [AP / Recall\@1%], [GraphSAGE 0.783 / 0.877], [LightGBM 0.967 / 0.990],
+    [Silva and Lima de Castro @silva_efficient_2026], [AMLSim 1M accounts], [Edge ranking], [Recall\@1%], [GraphSAGE 0.870], [—],
+    [Nguyen and Le @nguyen_real-time_2025], [IEEE-CIS], [Transaction classification], [AP / ROC-AUC], [HTGNN 0.641 / 0.940], [BRIGHT 0.371 / 0.863; LightGBM 0.361 / 0.851],
+    [Nguyen and Le @nguyen_real-time_2025], [PaySim], [Transaction classification], [AP / ROC-AUC], [HTGNN 0.682 / 0.956], [BRIGHT 0.475 / 0.891],
+    [Yue et al. @yue_adaptive_2026], [Elliptic (steps 35–49)], [Node classification], [AP / F1], [ATGNN-SP 0.262 / 0.265], [Graph HGB 0.262 / 0.271],
+    [Chen and Yang @chen_real-time_2026], [Taobao (private)], [Transaction classification], [P\@20%R (%)], [C2GAT framework 86.2], [MLP + engineered features 68.5],
+    [Chen and Yang @chen_real-time_2026], [Offline merchants (private)], [Transaction classification], [P\@20%R (%)], [C2GAT framework 56.5], [MLP + engineered features 47.2],
+    [Dintakurthy @dintakurthy_multisource_2026], [BankSim (10K-row extract)], [Transaction classification], [PR-AUC], [GraphSAGE + XGBoost fusion 0.450 (GraphSAGE alone 0.075)], [XGBoost 0.425],
+    [Sumsuzzaman et al. @sumsuzzaman_graph_2026], [IBM AML HI-Small], [Edge classification], [AUPRC], [Edge GraphSAGE 0.166], [MLP 0.210],
+  )
+  },
+) <tab:results>
+
+== From node scores to fraud structures
 
 The main advance since the existing reviews is the appearance of models and data where laundering is treated as a structure rather than as a set of independent transactions.  Elliptic2 shows that a subgraph method that marks subgraph membership and uses the surrounding graph (GLASS) outperforms pooling node embeddings (PR-AUC 0.208 vs 0.026) @bellei_shape_2024.
 
 At the motif level, LAS-GNN extends ego-ID message passing to temporal motifs and detects the key accounts of cycles and scatter-gather schemes in synthetic networks @verlaan_-gnn_2025. On the other hand, MEGA preserves repeated transfers between the same pair of accounts and improves laundering detection on all IBM AML variants @bilgi_mega_2026. However, these models still output a score per node or per transaction in all banking settings. Groups have to be rebuilt afterwards, at the cost of rapidly decreasing purity @silva_efficient_2026.
 
 
-== No consistent advantage over tabular models.
+== No consistent advantage over tabular models
 
 When recent studies compare GNNs with gradient boosting under a chronological split, the GNN does not win: tree models dominate on AMLSim @silva_efficient_2026, match the best temporal model on Elliptic @yue_adaptive_2026, and outperform a standalone GraphSAGE on BankSim, where only a fusion of both is best @dintakurthy_multisource_2026. Large GNN gains are reported mainly against weak or unequal baselines @nguyen_real-time_2025 @chen_real-time_2026.
 
