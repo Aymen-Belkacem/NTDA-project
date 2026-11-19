@@ -4,7 +4,7 @@
 
 #show: ieee.with(
   title: [A state of the art of GNN architectures applied to transaction networks to identify illegal financial rings, structuring, and complex multi-node fraud],
-  abstract: abstract: [Financial fraud and money laundering have evolved from isolated incidents into coordinated multi-entity operations—such as layering chains, cycles, and collusion rings—that routinely evade traditional rule-based systems and tabular classifiers. While machine learning excels on independent transactions, financial data naturally form complex, non-Euclidean transaction graphs characterized by intricate relational dependencies and rapid temporal evolution. Recently, Graph Neural Networks (GNNs) have emerged as a leading paradigm for learning representations on financial networks. In this survey, we provide a comprehensive state-of-the-art review of GNN architectures applied to transaction networks for financial crime detection. We organize existing models into a unified taxonomy spanning convolutional, attention-based, meta-path, transformer, and subgraph-aware message-passing paradigms. We further examine 11 public benchmark datasets across cryptocurrency, synthetic banking, and tabular domains, and synthesize empirical findings from 9 recent studies (2024–2026). Our analysis highlights critical evaluation gaps: despite advances in temporal and subgraph modeling, multi-node rings are still largely reconstructed post hoc, and standalone GNNs rarely outperform gradient-boosted trees under strict chronological splits. Finally, we outline key open challenges and future research directions, including label-free collective detection, hybrid graph–tabular fusion, and privacy-preserving real-world banking benchmarks.
+  abstract: [Financial fraud and money laundering have evolved from isolated incidents into coordinated multi-entity operations—such as layering chains, cycles, and collusion rings—that routinely evade traditional rule-based systems and tabular classifiers. While machine learning excels on independent transactions, financial data naturally form complex, non-Euclidean transaction graphs characterized by intricate relational dependencies and rapid temporal evolution. Recently, Graph Neural Networks (GNNs) have emerged as a leading paradigm for learning representations on financial networks. In this survey, we provide a comprehensive state-of-the-art review of GNN architectures applied to transaction networks for financial crime detection. We organize existing models into a unified taxonomy spanning convolutional, attention-based, meta-path, transformer, and subgraph-aware message-passing paradigms. We further examine 11 public benchmark datasets across cryptocurrency, synthetic banking, and tabular domains, and synthesize empirical findings from 9 recent studies (2024–2026). Our analysis highlights critical evaluation gaps: despite advances in temporal and subgraph modeling, multi-node rings are still largely reconstructed post hoc, and standalone GNNs rarely outperform gradient-boosted trees under strict chronological splits. Finally, we outline key open challenges and future research directions, including label-free collective detection, hybrid graph–tabular fusion, and privacy-preserving real-world banking benchmarks.
   ],
   authors: (
     (
@@ -57,10 +57,10 @@ Fraudsters deliberately camouflage themselves by interacting with normal users
 @dou_enhancing_2020, fraudulent transactions remain extremely rare
 @liu_pick_2021, criminal tactics evolve rapidly over time @yue_adaptive_2026,
 and banks require low-latency decisions alongside clear explanations for
-regulators @lu_bright_2022 @rao_xfraud_2021. Moreover, most deployed GNNs still
+regulators @lu_bright_2022 @rao_xfraud_2021. Moreover, most published GNN models still
 score individual nodes or edges rather than directly outputting complete fraud
-rings, requiring post-hoc group reconstruction. While recent surveys catalog
-existing GNN fraud detectors @motie_financial_2024 @cheng_graph_2025
+rings, requiring post-hoc group reconstruction @silva_efficient_2026. While recent surveys catalog
+existing GNN fraud detectors @motie_financial_2024 @cheng_graph_2025 
 @li_graph_2025, they rarely examine when GNNs actually outperform strong
 tabular baselines or what architectural and evaluation gaps remain. In this
 review, we go one step further by analyzing recent advances in subgraph and
@@ -81,14 +81,15 @@ Questions (RQs):
   and what next-generation approaches can go beyond them to improve real-world
   fraud detection?
 
-The remainder of this paper is organized as follows. Section II presents the related work and existing taxonomies on graph-based financial crime detection. Section III details the methodology and dataset selection criteria. Section IV reviews the benchmark datasets and evaluation protocols, while Section V analyzes the core Graph Neural Network architectures and empirical results. Finally, Section VI discusses open challenges, deployment constraints, and future research directions.
+The remainder of this paper is organized as follows. Section II presents the methodology and the background: graph learning, the taxonomy of GNN models, existing reviews, and financial fraud scenarios. Section III describes the datasets. Section IV reports the results of recent studies, Section V discusses them together with open challenges, and Section VI concludes.
 
 
 
 = Methodology <sec:method>
-// TODO: research questions, databases searched, search query, inclusion/exclusion??
-// calude suggestion: criteria, PRISMA-style selection flow (records found -> screened -> included).
 
+The goal of this paper is to provide a state of the art of graph neural networks (GNNs) applied to financial fraud detection, with a focus on collective schemes such as rings and structuring. Because the topic is popular, our first searches quickly returned several recent review papers. Rather than repeating their work, we used three of them as a starting point: the systematic review of Motie and Raahemi @motie_financial_2024, which covers studies published up to 2023, the narrative review of Cheng et al. @cheng_graph_2025, and the review of continual learning for anti-money laundering by Deprez et al. @deprez_advances_2025. Their main findings and open questions are summarized in @tab:convergences.
+
+To add value to these reviews, we contrasted their conclusions with primary studies published since 2024, which they do not cover. We searched [Google Scholar and arXiv] with terms combining “graph neural network” with “fraud”, “money laundering”, "structuring", also using the AI-assisted tools listed in @tab:ai_use. We kept studies that (i) propose or evaluate a GNN, (ii) address financial fraud or money laundering, (iii) were published in 2024 or later, and (iv) report results on a named dataset against at least one baseline. This led to nine studies; one further study was excluded because its datasets were not named and its baselines could not be reproduced..
 
 == Use of Generative AI Tools <sec:ai_use>
 
@@ -188,17 +189,17 @@ When the target is a group of accounts, the model needs a representation of
 the candidate subgraph. On the Elliptic2 benchmark, simply pooling the node
 representations produced results close to random. Classification improved
 when the model was told which nodes belonged to the candidate subgraph and
-could use information from the surrounding graph (Bellei et al., 2024).
+could use information from the surrounding graph @bellei_shape_2024.
 
 === GNN architectures for financial fraud detection
 
-Motie and Raahemi (2024) group GNN models for financial fraud detection into
+Motie and Raahemi @motie_financial_2024 group GNN models for financial fraud detection into
 four families according to how they gather and combine information from the
 graph.
 
 #figure(
   image("figures/taxonomy_gnn.jpg", width: 100%),
-  caption: [Taxonomy of GNN models for financial fraud detection.],
+  caption: [Taxonomy of GNN models for financial fraud detection. Adapted from Motie and Raahemi @motie_financial_2024 and extended with the models of the studies in Section IV.],
 ) <fig:taxonomy>
 
 *Convolutional models.* Graph Convolutional Networks (GCNs) aggregate neighbor
@@ -248,32 +249,21 @@ incorporate information from beyond the direct neighbors of a node.
   caption: [Comparison of three foundational GNN architectures.],
 ) <tab:gnn_backbones>
 
-We extend the taxonomy of Motie and Raahemi (2024) with the models covered in
-our results. ATGNN-SP uses a simplified two-hop graph convolution (Yue et
-al., 2026). Three other studies use GraphSAGE (Silva et al., 2026,
-Sumsuzzaman et al., 2026, and Dintakurthy et al., 2026). LAS-GNN, MEGA-PNA,
-and GLASS form an additional message-passing branch. They use ego-ID message
-passing, Principal Neighbourhood Aggregation (PNA), and subgraph labeling,
-respectively (Verlaan et al., 2025, Bilgi et al., 2026, and Bellei et al.,
-2024).
+We extend the taxonomy of Motie and Raahemi @motie_financial_2024 with the
+models covered in our results. ATGNN-SP uses a simplified two-hop graph
+convolution @yue_adaptive_2026. Three other studies use GraphSAGE
+@silva_efficient_2026 @sumsuzzaman_graph_2026 @dintakurthy_multisource_2026.
+LAS-GNN, MEGA-PNA, and GLASS form an additional message-passing branch. They
+use ego-ID message passing @verlaan_-gnn_2025, Principal Neighbourhood
+Aggregation (PNA) @bilgi_mega_2026, and subgraph labeling @bellei_shape_2024,
+respectively.
 
 C2GAT and HTGNN belong to the attention family. Both use graph attention, and
 HTGNN also uses transformer-style attention to combine entity representations
-(Chen et al., 2026, and Nguyen et al., 2025). The meta-path and Transformer
+@chen_real-time_2026 @nguyen_real-time_2025. The meta-path and Transformer
 branches retain the models from the original taxonomy.
 
-// To include the blue diagram, put the PNG at figures/taxonomy-blue.png
-// relative to this .typ file, then remove the opening and closing comment
-// markers around the figure below.
-/*
-#figure(
-  image("figures/taxonomy-blue.png", width: 100%),
-  caption: [
-    Taxonomy of GNN models for financial fraud detection, adapted from
-    Motie and Raahemi (2024) and extended with the models covered in our results.
-  ],
-) <fig:taxonomy>
-*/
+
 
 === Training paradigms and label availability
 
@@ -305,25 +295,24 @@ The learned representations can then be used to identify unusual patterns.
     [*Supervised*],
     [Verified historical labels are available.],
     [Minimizes a classification loss on labeled examples.],
-    [PC-GNN],
+    [PC-GNN @liu_pick_2021],
     [*Semi-supervised*],
     [Only a subset of entities or transactions is labeled.],
     [Uses labeled examples for training and draws on the surrounding graph.],
-    [GTAN],
+    [GTAN @xiang_semi-supervised_2023],
     [*Unsupervised*],
     [Confirmed fraud labels are unavailable.],
     [Searches for unusual patterns in the graph structure or attributes.],
-    [Subgraph mining],
+    [Subgraph mining @li_graph_2025],
     [*Self-supervised*],
     [Training signals are derived from the graph.],
     [Learns from a task such as aligning two views of the same subgraph.],
-    [Audit-HCL],
+    [Audit-HCL @jiao_dynamic_2026],
   ),
   caption: [Comparison of training paradigms by label availability.],
 ) <tab:learning_paradigms>
 
 == Existing review papers and limits
-// TODO A faire par aymen, bientot fait
 
 Multiple research papers with similar research questions have been published in the last 3 years @motie_financial_2024 @cheng_graph_2025 @deprez_advances_2025. In this section we synthesize their findings to establish a foundation for new developments in the subject of fraud detection. Recurring themes and convergences across the reviews are summarized in @tab:convergences.
 
@@ -440,7 +429,7 @@ adapt their tactics, which forces models to keep learning over time
 explanations that regulators can audit @rao_xfraud_2021
 @khanvilkar_regulatory_2025. In collusion rings, confirmed labels may even
 arrive months after the facts @jiao_dynamic_2026. These obstacles motivate the
-technical choices described in the next section.
+technical choices described in the previous section.
 
 #figure(
   caption: [Main financial fraud scenarios studied with graph learning.],
@@ -459,19 +448,7 @@ technical choices described in the next section.
 ) <tab:fraud_scenarios>
 
 
-== Taxonomy of GNN-Based Approaches <sec:taxonomy>
-// Following @motie2024financial, existing models can be grouped into four families
-// (@fig:taxonomy): convolutional-based, attention-based, metapath-based and
-// transformer-based models.
-
-// #figure(
-//   image("figures/motie2024-taxonomy.jpg", width: 100%),
-//   caption: [Taxonomy of GNN models for financial fraud detection, from @motie2024financial.],
-// ) <fig:taxonomy>
-
-
 = Datasets <sec:datasets>
-// Draft (2026-11-15).
 
 Public datasets for graph-based fraud detection differ in their domain, in
 the level at which labels are given (node, edge, or subgraph), and in whether
@@ -597,7 +574,6 @@ minority-class F1 rather than accuracy as a metric.
 
 = Results
 
-// Tableau de resultats: Shehrazade (draft table inserted 2026-11-16)
 
 In this section we synthesize the results of 9 studies not covered by the recent review papers, all of them released since 2024. @tab:results lists the main results reported by each study.
 
@@ -635,7 +611,7 @@ In this section we synthesize the results of 9 studies not covered by the recent
 
 == From node scores to fraud structures
 
-The main advance since the existing reviews is a new emphasis on subgraphs for AML detection. New models and data where laundering is treated as a structure rather than as a set of independent transactions have emerged. Notably, experiments on Elliptic2 show that a subgraph method that marks subgraph membership and uses the surrounding graph (GLASS) outperforms pooling node embeddings (PR-AUC 0.208 vs 0.026) @bellei_shape_2024.
+One advance since the existing reviews is a new emphasis on subgraphs for AML detection. New models and data where laundering is treated as a structure rather than as a set of independent transactions have emerged. Notably, experiments on Elliptic2 show that a subgraph method that marks subgraph membership and uses the surrounding graph (GLASS) outperforms pooling node embeddings (PR-AUC 0.208 vs 0.026) @bellei_shape_2024.
 
 At the motif level, LAS-GNN extends ego-ID message passing to temporal motifs. It also detects the key accounts of cycles and scatter-gather schemes in synthetic networks @verlaan_-gnn_2025. Another model, MEGA, preserves repeated transfers between the same pair of accounts and improves laundering detection on all IBM AML variants @bilgi_mega_2026. However, on bank-transfer data, these models still output a score per node or per transaction. Groups have to be rebuilt afterwards, at the cost of rapidly decreasing purity @silva_efficient_2026.
 
@@ -644,7 +620,7 @@ At the motif level, LAS-GNN extends ego-ID message passing to temporal motifs. I
 
 Four studies compared GNNs with gradient-boosted trees trained on the same features and split chronologically. In all four, the best GNN alone was at best on par with the tree model (@tab:results). Two studies report large GNN gains, but compare them with a model that received less information @nguyen_real-time_2025 or only with a multilayer perceptron @chen_real-time_2026.
 
-= Discussion and conclusion
+= Discussion
 
 Among the 9 studies, no two share the same dataset, task and metric. This results in an apples-to-oranges comparison, and no method can be shown to be better than another across studies. In turn, this makes it difficult to confidently draw general conclusions about the state of the art of this domain. This at least answers our second RQ: gaps still remain in evaluation protocols. Additionally, the gap is wider for bank transfers: real data remain confidential, so studies rely on synthetic data.
 
@@ -654,12 +630,10 @@ Two gaps are partly closed: heterogeneous graphs and subgraph-level detection. H
 
 The clearest progress concerns time: whereas half of the studies covered by Motie and Raahemi used static graphs @motie_financial_2024, recent models treat time as the order of transactions inside a pattern @verlaan_-gnn_2025, as timestamps encoded in attention or recurrent layers @chen_real-time_2026 @nguyen_real-time_2025, or as a stream on which the model is updated @yue_adaptive_2026, and they split data chronologically.
 
-One of the review papers @cheng_graph_2025 states that GNNs significantly outperform traditional machine learning methods. But when recent studies compare GNNs with gradient boosting under a chronological split, the GNN alone is not better @silva_efficient_2026 @yue_adaptive_2026 @dintakurthy_multisource_2026 @sumsuzzaman_graph_2026. These results do not mean that graphs are useless, but that well-tuned tree models can capture most of the signal and the graph does not add much when used alone. A fair evaluation of GNNs for fraud therefore needs a gradient-boosting baseline trained on the same features and the same chronological split.
+One of the review papers @cheng_graph_2025 states that GNNs significantly outperform traditional machine learning methods. But when recent studies compare GNNs with gradient boosting under a chronological split, the GNN alone is not clearly better @silva_efficient_2026 @yue_adaptive_2026 @dintakurthy_multisource_2026 @sumsuzzaman_graph_2026. These results do not mean that graphs are useless, but that well-tuned tree models can capture most of the signal and the graph does not add much when used alone. A fair evaluation of GNNs for fraud therefore needs a gradient-boosting baseline trained on the same features and the same chronological split.
 
 
 == Open Challenges and Future Directions <sec:challenges>
-// TODO: edge- and graph-level anomaly detection; unsupervised and semi-supervised
-// learning; dataset scarcity (taxation, real estate, mortgage); dynamic graphs.
 
 A common thread across the recent studies is the reliance on cryptocurrency or synthetic datasets. It was already the case in the studies covered by the existing reviews (@tab:convergences), and it remains so today. There is no public benchmark of real bank transfers with group-level labels (see @sec:datasets): Elliptic2 is crypto, IBM AML and AMLSim are synthetic. Banking secrecy, competition and data protection laws will likely keep this issue open in the near future.
 
@@ -667,9 +641,9 @@ Unsupervised or label-free collective detection remains understudied. None of th
 
 = Conclusion
 
-This review addressed three research questions on graph neural networks for detecting financial fraud in transaction networks. For the first, we organized the GNN architectures used in finance into a taxonomy and described the benchmarks and datasets on which they are evaluated. Most of these datasets are either synthetic or built from cryptocurrency transactions; no public dataset combines real bank transfers with group-level labels.
+This review addressed three research questions on graph neural networks for detecting financial fraud in transaction networks. For the first, we presented and extended a taxonomy of GNN architectures used in finance into a taxonomy, and described the benchmarks and datasets on which they are evaluated. Most of these datasets are either synthetic or built from cryptocurrency transactions; no public dataset combines real bank transfers with group-level labels.
 
 For the second, we found that results are hard to compare: no two of the recent studies share the same dataset, task and metric, so no model can be declared better than another across studies. Within studies, well-tuned tree-based models such as XGBoost remain competitive with GNNs, which are most useful when fraud is defined by a structure, such as a cycle or a laundering path, or when they are combined with a tabular model.
 
-For the third, we observed clear progress over the last two years, notably in the modeling of time and in the evaluation of highly imbalanced data. Important gaps remain, however: group-level detection is still rare outside cryptocurrency and synthetic data, unsupervised methods are scarce, and few studies release their code. A common evaluation protocol, with public data, chronological splits and a strong tabular baseline, would be a first step toward comparable results.
+For the third, we observed clear progress over the last two years, notably in the modeling of time and in the evaluation of highly imbalanced data. Important gaps remain, however: group-level detection is still rare outside cryptocurrency and synthetic data, unsupervised methods are scarce. A common evaluation protocol, with public data, chronological splits and a strong tabular baseline, would be a first step toward comparable results.
 
