@@ -119,39 +119,22 @@ take full responsibility for the content of this paper.
 
 == Background <sec:background>
 
+=== Graph representation and message passing
 
-To uncover coordinated fraud, Graph Neural Networks (GNNs) first organize raw
-transaction records into a directed network, formally written as a graph
-$cal(G) = (cal(V), cal(E))$. In this
-network, the nodes $cal(V)$ represent the actors in the financial system—such
-as bank accounts, credit cards, merchants, or devices—while the directed edges
-$cal(E)$ represent the interactions between them, such as money transfers or
-shared devices. Because different
-actors and transactions carry different meanings, this graph is heterogeneous
-and attributed: each node $v$ has its own profile vector $bold(x)_v$ (e.g.,
-account age or balance), and each edge $(u, v)$ carries transaction details
-$bold(x)_(u v)$ (e.g., transfer amount and timestamp).
+To uncover coordinated financial fraud, Graph Neural Networks (GNNs) organize
+raw transaction records and related data into a graph
+$cal(G) = (cal(V), cal(E))$. The nodes $cal(V)$ represent entities such as
+bank accounts, credit cards, merchants, or devices. The edges $cal(E)$
+represent relationships between these entities. For example, a money transfer
+can be represented as a directed edge from the sending account to the receiving
+account, while two accounts using the same device can each be linked to a node
+representing that device.
 
-Once the graph is built, a GNN evaluates whether an account or transaction is
-suspicious through an iterative process called message passing.
-The intuition is simple: an
-account's risk depends not only on its own activity, but also on who it
-interacts with. At each step (or layer) $k$, every node $v$ gathers information
-from its immediate neighbors $cal(N)(v)$, aggregates those signals using a
-simple operation like a sum or average, and updates its own internal risk
-representation $bold(h)_v^((k))$:
-$ bold(h)_v^((k)) = "UPDATE"^((k)) ( bold(h)_v^((k-1)), plus.o_(u in cal(N)(v)) "MSG"^((k))(bold(h)_u^((k-1)), bold(h)_v^((k-1)), bold(x)_(u v)) ) $
-Here, $"MSG"$ extracts the relevant signal from each neighbor $u$ and edge
-$bold(x)_(u v)$, $plus.o$ combines all incoming messages regardless of their
-order, and $"UPDATE"$ merges this neighborhood context with the node's previous
-state $bold(h)_v^((k-1))$. Repeating this process across $K$ layers allows
-information to travel $K$ steps across the network, revealing indirect money
-laundering chains. To flag a whole group of accounts, the node representations
-of a candidate subgraph must then be combined into one representation. Simply
-pooling them is not sufficient: on the Elliptic2 benchmark, pooled node
-embeddings perform close to random, whereas marking which nodes belong to the
-subgraph and using the surrounding graph clearly improves subgraph
-classification @bellei_shape_2024.
+A financial graph can be heterogeneous because it contains several types of nodes
+and edges. It can also be attributed: each node $v$ can have a feature vector
+$bold(x)_v$, which may include the age or balance of an account, and each edge
+$(u, v)$ can carry features $bold(x)_(u v)$, such as the amount and timestamp
+of a transfer.
 
 #figure(
   block(
@@ -163,56 +146,157 @@ classification @bellei_shape_2024.
   )[
     #set text(size: 8.5pt)
     *Raw Transactions*
-    $arrow.r$ *Graph* $cal(G)$ (Entities $cal(V)$ & Transfers $cal(E)$)
-    $arrow.r$ *K-Hop Message Passing* (GCN / GraphSAGE / GAT)
-    $arrow.r$ *Risk Score* $hat(y)_v in [0, 1]$
+    $arrow.r$ *Graph* $cal(G)$ (entities and relationships)
+    $arrow.r$ *Message Passing*
+    $arrow.r$ *Fraud Risk Score*
   ],
   caption: [From raw financial transactions to graph-based fraud risk scoring.],
 ) <fig:mpnn_pipeline>
 
-Building on this message passing principle, three foundational architectures
-have shaped financial fraud detection, each addressing a limitation of its
-predecessor. First, Graph Convolutional
-Networks (GCNs) compute a normalized average of all neighbor features using
-node degrees, providing a clean baseline on static graphs like Bitcoin;
-however, GCN requires the entire graph during training
-and cannot easily handle newly created accounts. To overcome this, GraphSAGE
-introduces inductive learning by sampling a fixed-size neighborhood and
-combining a node's own features with its sampled neighbors, allowing banks to
-score unseen accounts in real time. Yet, both GCN and GraphSAGE treat every
-neighbor with equal structural weight, which becomes a weakness when fraudsters
-hide among hundreds of normal clients. Graph Attention Networks (GATs) solve
-this issue by learning dynamic attention weights $alpha_(u v)$ that focus on
-suspicious links while ignoring benign noise.
+Once the graph is built, a GNN uses *message passing* to incorporate information
+from neighboring nodes. The idea is that the risk associated with an account
+depends on its own activity and on the entities with which it interacts.
+The initial node representation is $bold(h)_v^((0)) = bold(x)_v$.
+At layer $k$, node $v$ receives messages from its incoming neighbors
+$cal(N)(v)$, aggregates them, and updates its representation:
+
+$
+  bold(m)_v^((k)) =
+  plus.o_(u in cal(N)(v))
+    "MSG"^((k))(
+      bold(h)_u^((k-1)),
+      bold(h)_v^((k-1)),
+      bold(x)_(u v)
+    )
+$
+
+$
+  bold(h)_v^((k)) =
+    "UPDATE"^((k))(bold(h)_v^((k-1)), bold(m)_v^((k)))
+$
+
+The $"MSG"$ function computes the information sent from neighbor $u$ to node
+$v$ and can use the features of the connecting edge. The operator $plus.o$
+combines the incoming messages independently of their order, for example
+through a sum or an average. The $"UPDATE"$ function combines the result
+with the previous representation of $v$. After $K$ layers, a node can receive
+information from entities up to $K$ steps away along the message-passing paths.
+This can help the model identify indirect connections in money laundering chains.
+
+The model can then use these representations to score accounts or transactions.
+When the target is a group of accounts, the model needs a representation of the
+candidate subgraph. On the Elliptic2 benchmark, directly pooling node embeddings
+yielded performance close to random. Marking the nodes that belong to the
+candidate subgraph and using the surrounding graph improved classification
+@bellei_shape_2024.
+
+=== GNN architecture families for financial fraud detection
+
+Following Motie and Raahemi @motie_financial_2024, GNN models for financial
+fraud detection can be grouped into four families according to how they collect
+and combine information in the graph: convolutional-based, attention-based,
+meta-path-based, and transformer-based models. The first two families include
+three foundational architectures: GCN, GraphSAGE, and GAT.
+
+*Convolutional-based models.* Graph Convolutional Networks (GCNs) aggregate
+information from neighboring nodes using weights determined by node degrees.
+They provide a baseline for fraud detection on static transaction graphs,
+such as those constructed from Bitcoin transactions. The original transductive
+setting assumes that the nodes to be classified are already present in the graph
+used during training. GraphSAGE learns an aggregation function that can also
+be applied to previously unseen nodes. It typically samples a fixed number of
+neighbors at each layer and combines their features with those of the target
+node. This makes it possible to score a new account once its features and graph
+connections are available.
+
+*Attention-based models.* Graph Attention Networks (GATs) learn a weight
+$alpha_(u v)$ for the contribution of neighbor $u$ to node $v$. This allows
+the model to emphasize the neighbors that are most informative for its
+prediction, which can help when suspicious activity is surrounded by many
+ordinary interactions. Attention weights express the importance assigned by
+the model and can vary across neighbors.
+
+*Meta-path-based models.* These models aggregate information along predefined
+sequences of node or relationship types in a heterogeneous graph. For example,
+an account–device–account meta-path connects accounts that use the same
+device. This lets the model distinguish a shared-device relationship from a
+direct money transfer.
+
+*Transformer-based models.* These models use self-attention to combine graph
+information. Depending on the architecture, attention can extend beyond direct
+neighbors and incorporate structural information to model relationships
+between more distant entities.
 
 #figure(
-  caption: [Progression of foundational GNN architectures for financial fraud detection.],
+  caption: [Comparison of three foundational GNN architectures for financial
+    fraud detection.],
   table(
     columns: (auto, 1fr, 1fr, 1fr),
     align: left,
     inset: (x: 6pt, y: 4pt),
     stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
     table.header[Model][Core Idea][Key Advantage][Main Limitation in Fraud],
-    [*GCN*], [Degree-normalized average of all neighbors], [Simple and effective on static networks], [Transductive (cannot generalize to unseen accounts)],
-    [*GraphSAGE*], [Fixed-size neighbor sampling + self-concatenation], [Inductive scaling to new accounts and merchants], [Treats benign and suspicious neighbors equally],
-    [*GAT*], [Learnable attention weights $alpha_(u v)$ on edges], [Filters out noisy benign neighbors], [Higher memory and latency cost on dense graphs],
-  )
+    [*GCN*],
+    [Degree-normalized aggregation of neighbor features],
+    [Simple baseline for static transaction graphs],
+    [The original transductive setting assumes that the target accounts are
+      already in the graph used during training],
+    [*GraphSAGE*],
+    [Samples neighbors and combines their features with those of the target node],
+    [Can score unseen accounts once their features and connections are available],
+    [Neighbor sampling can miss rare but informative connections],
+    [*GAT*],
+    [Learns attention weights $alpha_(u v)$ for neighbors],
+    [Can give more weight to informative neighbors],
+    [Computing attention over many edges can increase memory use and latency],
+  ),
 ) <tab:gnn_backbones>
 
-Finally, how these architectures are trained depends heavily on label
-availability in real banking systems, where confirmed fraud cases are rare and
-often take months to investigate. When historical audit
-labels are available, supervised learning trains GNNs directly with weighted or
-focal classification losses to handle extreme class imbalance.
-Because annotating millions of
-transactions is too costly, semi-supervised learning exploits the graph
-structure itself to propagate risk signals from a small labeled subset to the
-surrounding unlabeled network. Conversely, when no
-confirmed fraud labels exist at all—such as in emerging laundering schemes—
-unsupervised and self-supervised methods detect structural outliers by
-reconstructing graph attributes, mining dense subgraphs,
-or aligning structural and temporal views via contrastive
-learning.
+@fig:taxonomy extends the taxonomy of Motie and Raahemi
+@motie_financial_2024 with the models listed in @tab:results. Most of the added
+models belong to the convolutional family. ATGNN-SP uses a simplified two-hop
+graph convolution @yue_adaptive_2026, and three studies rely on GraphSAGE
+@silva_efficient_2026 @sumsuzzaman_graph_2026 @dintakurthy_multisource_2026.
+LAS-GNN, MEGA-PNA, and GLASS are grouped in the *Other message-passing GNN*
+branch. They use ego-ID message passing, Principal Neighbourhood Aggregation
+(PNA), and subgraph labeling, respectively
+@verlaan_-gnn_2025 @bilgi_mega_2026 @bellei_shape_2024.
+
+C2GAT and HTGNN belong to the attention family. Both use graph attention, and
+HTGNN also uses transformer-style attention to fuse entity embeddings
+@chen_real-time_2026 @nguyen_real-time_2025. The meta-path and
+transformer branches in the figure contain the models from the original
+taxonomy, as the studies in @tab:results did not add a model to either branch.
+
+#figure(
+  image("figures/taxonomy-blue.png", width: 100%),
+  caption: [Taxonomy of GNN models for financial fraud detection, adapted from
+    Motie and Raahemi @motie_financial_2024 and extended with the models listed
+    in @tab:results.],
+  placement: top,
+  scope: "parent",
+) <fig:taxonomy>
+
+=== Training paradigms and label availability
+
+The choice of training paradigm depends on the availability of fraud labels.
+In banking systems, confirmed cases are rare and investigations can delay
+labeling. In *supervised learning*, a GNN is trained on verified historical
+labels. Weighted or focal losses can help account for the imbalance between
+fraudulent and legitimate examples.
+
+In *semi-supervised learning*, only a small fraction of accounts or
+transactions has labels. The model uses those labels for training and can use
+the features and connections of unlabeled entities during message passing.
+The graph therefore provides context even for entities whose fraud status is
+unknown.
+
+When confirmed fraud labels are unavailable, *unsupervised* methods can look
+for unusual patterns, for example through graph reconstruction or subgraph
+mining. *Self-supervised* methods create training signals from the graph
+itself. Contrastive learning, for instance, can train a model to align
+representations of different views of the same entity or subgraph.
+These representations can then be used to identify anomalous patterns.
 
 #figure(
   caption: [Comparison of GNN training paradigms according to label availability.],
@@ -221,12 +305,27 @@ learning.
     align: left,
     inset: (x: 6pt, y: 4pt),
     stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
-    table.header[Paradigm][When to Use It][How It Learns][Key Examples],
-    [*Supervised*], [Verified historical fraud labels are available], [Minimizes imbalance-aware classification loss], [GCN, PC-GNN],
-    [*Semi-Supervised*], [Only a small fraction of transactions is labeled], [Propagates risk from labeled nodes to unlabeled neighbors], [GTAN],
-    [*Unsupervised*], [Zero fraud labels or unknown new attack patterns], [Detects abnormal subgraphs or contrastive mismatches], [Subgraph mining @li_graph_2025, Audit-HCL @jiao_dynamic_2026],
-  )
+    table.header[Paradigm][When to Use It][How It Learns][Example],
+    [*Supervised*],
+    [Verified historical fraud labels are available],
+    [Trains on labeled examples with a classification loss],
+    [PC-GNN],
+    [*Semi-supervised*],
+    [Only a small fraction of entities or transactions is labeled],
+    [Uses a loss on labeled examples while drawing on the surrounding graph],
+    [GTAN],
+    [*Unsupervised*],
+    [Confirmed fraud labels are unavailable],
+    [Identifies anomalies in graph attributes or structure],
+    [Subgraph mining @li_graph_2025],
+    [*Self-supervised*],
+    [The graph provides training signals without requiring manual labels],
+    [Learns from a task derived from the data, such as aligning two views],
+    [Audit-HCL @jiao_dynamic_2026],
+  ),
 ) <tab:learning_paradigms>
+
+
 
 == Existing review papers and limits
 // TODO A faire par aymen, bientot fait
