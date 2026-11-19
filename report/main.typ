@@ -4,9 +4,7 @@
 
 #show: ieee.with(
   title: [A state of the art of GNN architectures applied to transaction networks to identify illegal financial rings, structuring, and complex multi-node fraud],
-  abstract: [
-    // TODO: write the abstract last (150–250 words): context, scope of the review,
-    // method (databases, number of papers), main findings, open challenges.
+  abstract: [The remainder of this paper is organized as follows. Section II details our review methodology, generative AI disclosure, technical foundations of GNNs, and a taxonomy of financial fraud scenarios and architectures. Section III reviews 11 public benchmark datasets across cryptocurrency, synthetic banking, and tabular domains. Section IV synthesizes empirical findings from 9 recent studies (2024–2026), contrasting structural subgraph models against tabular baselines. Finally, Section V discusses evaluation gaps, open challenges, and future research directions.
     
   ],
   authors: (
