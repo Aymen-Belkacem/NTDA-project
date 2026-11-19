@@ -465,20 +465,6 @@ technical choices described in the next section.
 //   caption: [Taxonomy of GNN models for financial fraud detection, from @motie2024financial.],
 // ) <fig:taxonomy>
 
-A faire par Aymen
-
-=== Convolutional-Based Models
-A faire par Aymen
-
-=== Attention-Based Models
-A faire par Aymen
-
-=== Metapath-Based Models
-A faire par Aymen
-
-=== Transformer-Based Models
-A faire par Aymen
-
 
 = Datasets <sec:datasets>
 // Draft (2026-11-15).
