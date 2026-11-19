@@ -84,15 +84,7 @@ Questions (RQs):
   and what next-generation approaches can go beyond them to improve real-world
   fraud detection?
 
-The remainder of this paper is organized as follows. Section @sec:method
-describes our review methodology, introduces the technical foundations of GNNs
-for financial fraud, and organizes existing architectures into a structured
-taxonomy. Section @sec:datasets compares public benchmark datasets across
-domains and label granularities. Section @sec:results synthesizes empirical
-results from nine recent studies (2024–2026), contrasting subgraph-level
-advances with gradient-boosted tree baselines. Finally, Section @sec:discussion
-discusses evaluation gaps, open challenges, and future research directions.
-
+The remainder of this paper is organized as follows. Section II presents the related work and existing taxonomies on graph-based financial crime detection. Section III details the methodology and dataset selection criteria. Section IV reviews the benchmark datasets and evaluation protocols, while Section V analyzes the core Graph Neural Network architectures and empirical results. Finally, Section VI discusses open challenges, deployment constraints, and future research directions.
 
 
 
