@@ -32,6 +32,10 @@
 
 #set text(lang: "en")
 
+// Tables: smaller text, no justification and no hyphenation in narrow cells.
+#show table: set par(justify: false)
+#show table: set text(size: 8.5pt, hyphenate: false)
+
 = Introduction
 
 As financial services move online—from instant mobile payments to
@@ -111,7 +115,7 @@ take full responsibility for the content of this paper.
     table.header[Task][AI Tool(s)][Role of the Authors],
     [*Search and validation of sources*], [NotebookLM (Google), Perplexity], [Final inclusion decisions; each source checked in its original publication],
     [*Synthesis and summary of sources*], [NotebookLM, Perplexity, Claude (Anthropic)], [Authors also read and summarized the papers themselves, then compared their own understanding with the different AI syntheses],
-    [*Retrieval of key facts and figures*], [Claude], [],
+    [*Retrieval of key facts and figures*], [Claude], [Figures checked against the cited paper],
     [*Text editing and proofreading*], [Claude], [Arguments written by the authors; edits reviewed before acceptance],
   )
   },
@@ -177,10 +181,18 @@ transaction.
     fill: rgb("#f2f6fa"),
     stroke: 0.6pt + rgb("#9eb5c8"),
     radius: 4pt,
-    inset: 10pt,
+    inset: 8pt,
   )[
-    *Raw transactions* $arrow.r$ *Financial graph*
-    $arrow.r$ *Message passing* $arrow.r$ *Fraud risk score*
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, auto, 1fr, auto, 1fr, auto, 1fr),
+      align: center + horizon,
+      column-gutter: 4pt,
+      [*Raw\ transactions*], $arrow.r$,
+      [*Financial\ graph*], $arrow.r$,
+      [*Message\ passing*], $arrow.r$,
+      [*Fraud\ risk score*],
+    )
   ],
   caption: [From raw transactions to a graph-based fraud risk score.],
 ) <fig:mpnn_pipeline>
@@ -199,6 +211,8 @@ graph.
 
 #figure(
   image("figures/taxonomy_gnn.jpg", width: 100%),
+  placement: top,
+  scope: "parent",
   caption: [Taxonomy of GNN models for financial fraud detection. Adapted from Motie and Raahemi @motie_financial_2024 and extended with the models of the studies in Section IV.],
 ) <fig:taxonomy>
 
@@ -226,7 +240,7 @@ incorporate information from beyond the direct neighbors of a node.
   table(
     columns: (auto, 1fr, 1fr, 1fr),
     align: left,
-    inset: 5pt,
+    inset: 3pt,
     stroke: 0.4pt + rgb("#ccd6df"),
     table.header(
       [*Model*], [*Core idea*], [*Advantage*], [*Limitation*],
@@ -285,9 +299,9 @@ The learned representations can then be used to identify unusual patterns.
 
 #figure(
   table(
-    columns: (auto, 1fr, 1fr, auto),
+    columns: (auto, 1fr, 1.2fr, 0.8fr),
     align: left,
-    inset: 5pt,
+    inset: 3pt,
     stroke: 0.4pt + rgb("#ccd6df"),
     table.header(
       [*Paradigm*], [*Label availability*], [*How it learns*], [*Example*],
@@ -382,9 +396,9 @@ rather than accuracy @yue_adaptive_2026 @endah_eka_setiawati_graph_2026
   caption: [Technical challenges of GNNs for fraud detection and representative remedies.],
   placement: none,
   table(
-    columns: (auto, 1fr, 1fr, 1fr),
+    columns: (0.8fr, 1fr, 1fr, auto),
     align: left,
-    inset: (x: 6pt, y: 4pt),
+    inset: (x: 4pt, y: 4pt),
     stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
     table.header[Challenge][Why It Matters in Fraud][Representative Remedy][Examples],
     [*Limited expressivity*], [Laundering patterns are directed subgraphs], [Port numbers, ego IDs, reverse messages], [@egressy_provably_2024 @velickovic_message_2022],
@@ -435,9 +449,9 @@ technical choices described in the previous section.
   caption: [Main financial fraud scenarios studied with graph learning.],
   placement: none,
   table(
-    columns: (auto, 1fr, 1fr, 1fr),
+    columns: (0.8fr, 1fr, 1fr, auto),
     align: left,
-    inset: (x: 6pt, y: 4pt),
+    inset: (x: 4pt, y: 4pt),
     stroke: (x, y) => if y <= 1 { (top: 0.5pt) },
     table.header[Scenario][Graph Structure][Main Difficulty][Examples],
     [*Credit card fraud*], [Cardholders, merchants and transactions], [Fraud hidden behind legitimate transactions, scarce labels], [@zou_effective_2024 @xiang_semi-supervised_2023],
@@ -617,7 +631,7 @@ At the motif level, LAS-GNN extends ego-ID message passing to temporal motifs. I
 
 == Comparison with tabular models
 
-Four studies compared GNNs with gradient-boosted trees trained on the same features and split chronologically. In all four, the best GNN alone was at best on par with the tree model (@tab:results). Two studies report large GNN gains, but compare them with a model that received less information @nguyen_real-time_2025 or only with a multilayer perceptron @chen_real-time_2026.
+Four studies compared GNNs with gradient-boosted trees trained on the same features and split chronologically @silva_efficient_2026 @yue_adaptive_2026 @dintakurthy_multisource_2026 @sumsuzzaman_graph_2026. In all four, the best GNN alone was at best on par with the tree model (@tab:results). Two studies report large GNN gains, but compare them with a model that received less information @nguyen_real-time_2025 or only with a multilayer perceptron @chen_real-time_2026.
 
 = Discussion
 
