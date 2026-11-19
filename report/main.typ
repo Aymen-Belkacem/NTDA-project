@@ -38,7 +38,6 @@
 #set text(lang: "en")
 
 = Introduction
-= Introduction
 
 As financial services move online—from instant mobile payments to
 cryptocurrencies—financial fraud has evolved from isolated incidents into
@@ -84,6 +83,7 @@ Questions (RQs):
 - *RQ3 (Discussion — Beyond GNNs):* What are the main limits of current GNNs,
   and what next-generation approaches can go beyond them to improve real-world
   fraud detection?
+
 The remainder of this paper is organized as follows. Section @sec:method
 describes our review methodology, introduces the technical foundations of GNNs
 for financial fraud, and organizes existing architectures into a structured
@@ -92,7 +92,6 @@ domains and label granularities. Section @sec:results synthesizes empirical
 results from nine recent studies (2024–2026), contrasting subgraph-level
 advances with gradient-boosted tree baselines. Finally, Section @sec:discussion
 discusses evaluation gaps, open challenges, and future research directions.
-
 
 
 
