@@ -562,20 +562,28 @@ The main advance since the existing reviews is a new emphasis on subgraphs for A
 At the motif level, LAS-GNN extends ego-ID message passing to temporal motifs. It also detects the key accounts of cycles and scatter-gather schemes in synthetic networks @verlaan_-gnn_2025. Another model, MEGA,  preserves repeated transfers between the same pair of accounts and improves laundering detection on all IBM AML variants @bilgi_mega_2026. However, these models still output a score per node or per transaction in all banking settings. Groups have to be rebuilt afterwards, at the cost of rapidly decreasing purity @silva_efficient_2026.
 
 
-== No consistent advantage over tabular models
+== Comaprison with tabular models
 
-Some of the review papers claimed taht GNN consistently outperformed traditional machine learning methods, such as tabular models. But when recent studies compare GNNs with gradient boosting under a chronological split, the GNN is not always better: tree models dominate on AMLSim @silva_efficient_2026, they match the best temporal model on Elliptic @yue_adaptive_2026, and they outperform a standalone GraphSAGE on BankSim, where only a fusion of both is best @dintakurthy_multisource_2026. Large GNN gains are reported mainly against weak or unequal baselines @nguyen_real-time_2025 @chen_real-time_2026.
-
-
-
-
-
-= Open Challenges and Future Directions <sec:challenges>
-// TODO: edge- and graph-level anomaly detection; unsupervised and semi-supervised
-// learning; dataset scarcity (taxation, real estate, mortgage); dynamic graphs.
-
-A faire par 
+Four studies compared GNNs with gradient-boosted trees trained on the same features and split chronologically. In none of them did a GNN alone obtain a better score (@tab:results): … Two studies report large GNN gains, but compare them with a model that received less information @nguyen_real-time_2025 or only with a multilayer perceptron @chen_real-time_2026.
 
 = Discussions and conclusion
 
-A faire par Aymen et Shehrazade
+Among the 10 studies, no two share the same dataset, task and metric. This results in an apple-to-orange comparison, and you can never say that one method is better than another. In turn, this makes it difficult to confidently draw general conclusions about the state of the art of this domain. This at least answers our second RQ: gaps still remain in evaluation protocols. Additionally, the gap is wider for non-cryptocurrency applications, where datasets often remain confidentials.
+
+One developpement to be noted is how to deal with imbalanced datasets. Recent studies no longer use accuracy. The use instead area under the repcision-recall curve (PR-AUC), the f1-score of the fraud class, and the share of frauds found among the top-ranked alerts (precision or recall at k). Some also define their own custom metrics.
+
+Two partly-closed gaps are heterogeneous graphs and subgraph level detections. However, once again, all of this progress is done on crypto or synthetic datasets.
+
+Some of the review papers claimed that GNN consistently outperformed traditional machine learning methods, such as tabular models. But when recent studies compare GNNs with gradient boosting under a chronological split, the GNN is not always better @silva_efficient_2026 @yue_adaptive_2026 @dintakurthy_multisource_2026 @nguyen_real-time_2025 @chen_real-time_2026. These results don't mean that graphs are useless, but that some well-tuned tree models can capture most of the signal and the graph doesnt add much when used alone. A fair evaluation of GBBs for fraud should therefore needs a gradient-boosting baseline trained on the same feature and the same split.
+
+
+== Open Challenges and Future Directions <sec:challenges>
+// TODO: edge- and graph-level anomaly detection; unsupervised and semi-supervised
+// learning; dataset scarcity (taxation, real estate, mortgage); dynamic graphs.
+
+A common thread accross this study is the reliance on cryptocurrency or synthetic datasets. It was already an issue 2 years ago, and it remains one today. There is no real-bank benchmark: Elliptic2 is crypto, IBM AML and AMLSim are synthetic. Banking secrecy, competition and data protection laws will likely keep this issue open in the near future.
+
+Unsupervised or label-free collective detection remain understudied. None of the 10 recent studies cover it, despite the conclusion in Motie & Raahemi for more unsupervised methods.
+
+
+
