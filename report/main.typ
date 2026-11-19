@@ -87,7 +87,7 @@ The remainder of this paper is organized as follows. Section II presents the met
 
 The goal of this paper is to provide a state of the art of graph neural networks (GNNs) applied to financial fraud detection, with a focus on collective schemes such as rings and structuring. Because the topic is popular, our first searches quickly returned several recent review papers. Rather than repeating their work, we used three of them as a starting point: the systematic review of Motie and Raahemi @motie_financial_2024, which covers studies published up to 2023, the narrative review of Cheng et al. @cheng_graph_2025, and the review of continual learning for anti-money laundering by Deprez et al. @deprez_advances_2025. Their main findings and open questions are summarized in @tab:convergences.
 
-To add value to these reviews, we contrasted their conclusions with primary studies published since 2024, which they do not cover. We searched [Google Scholar and arXiv] with terms combining “graph neural network” with “fraud”, “money laundering”, "structuring", also using the AI-assisted tools listed in @tab:ai_use. We kept studies that (i) propose or evaluate a GNN, (ii) address financial fraud or money laundering, (iii) were published in 2024 or later, and (iv) report results on a named dataset against at least one baseline. This led to nine studies; one further study was excluded because its datasets were not named and its baselines could not be reproduced.
+To add value to these reviews, we contrasted their conclusions with primary studies published since 2024, which they do not cover. We used the AI-assisted tools listed in @tab:ai_use with terms combining "graph neural network" with "fraud", "money laundering", and "structuring". We kept studies that (i) propose or evaluate a GNN, (ii) address financial fraud or money laundering, (iii) were published in 2024 or later, and (iv) report results on a named dataset against at least one baseline. This led to nine studies; one further study was excluded because its datasets were not named and its baselines could not be reproduced.
 
 This approach has limits. It is not a systematic review, and the selection of recent studies may be incomplete. Most papers were read through their abstract, conclusion, figures and result tables, and AI-assisted summaries were checked against the original papers.
 
@@ -111,7 +111,7 @@ take full responsibility for the content of this paper.
     table.header[Task][AI Tool(s)][Role of the Authors],
     [*Search and validation of sources*], [NotebookLM (Google), Perplexity], [Final inclusion decisions; each source checked in its original publication],
     [*Synthesis and summary of sources*], [NotebookLM, Perplexity, Claude (Anthropic)], [Authors also read and summarized the papers themselves, then compared their own understanding with the different AI syntheses],
-    [*Retrieval of key facts and figures*], [Claude], [Figures checked against the cited paper],
+    [*Retrieval of key facts and figures*], [Claude], [],
     [*Text editing and proofreading*], [Claude], [Arguments written by the authors; edits reviewed before acceptance],
   )
   },
@@ -569,8 +569,7 @@ transfers with group-level labels: the only subgraph labels (Elliptic2) come
 from a heuristic on Bitcoin data, and the only typology labels (IBM AML,
 AMLSim) are synthetic. Studies on real bank data use private graphs
 @johannessen_finding_2023. Second, all datasets are highly imbalanced, with
-0.05% to 4.6% positives. Consequently, recent work reports PR-AUC or
-minority-class F1 rather than accuracy as a metric.
+0.05% to 4.6% positives.
 
 = Results
 
@@ -626,7 +625,7 @@ Among the 9 studies, no two share the same dataset, task and metric. This result
 
 One development to be noted is how studies deal with imbalanced datasets. Recent studies no longer use accuracy. Instead, they use the area under the precision-recall curve (PR-AUC), the F1-score of the fraud class, and the share of frauds found among the top-ranked alerts (precision or recall at k). Some also define their own custom metrics.
 
-Two gaps are partly closed: heterogeneous graphs and subgraph-level detection. However, once again, most of this progress (and in fact all of the subgraph progress) was obtained on crypto or synthetic datasets.
+Two gaps are partly closed: heterogeneous graphs and subgraph-level detection. However, once again, most of this progress (and in fact all of the subgraph progress) was obtained on cryptocurrency or synthetic datasets.
 
 The clearest progress concerns time: whereas half of the studies covered by Motie and Raahemi used static graphs @motie_financial_2024, recent models treat time as the order of transactions inside a pattern @verlaan_-gnn_2025, as timestamps encoded in attention or recurrent layers @chen_real-time_2026 @nguyen_real-time_2025, or as a stream on which the model is updated @yue_adaptive_2026, and they split data chronologically.
 
