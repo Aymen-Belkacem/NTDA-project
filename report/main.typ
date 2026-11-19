@@ -668,5 +668,11 @@ A common thread across the recent studies is the reliance on cryptocurrency or s
 
 Unsupervised or label-free collective detection remains understudied. None of the 9 studies of our corpus covers it, although Motie and Raahemi @motie_financial_2024 called for more unsupervised methods. A recent exception outside our corpus is Audit-HCL @jiao_dynamic_2026, which reports useful detection even without fraud labels.
 
+= Conclusion
 
+This review addressed three research questions on graph neural networks for detecting financial fraud in transaction networks. For the first, we organized the GNN architectures used in finance into a taxonomy and described the benchmarks and datasets on which they are evaluated. Most of these datasets are either synthetic or built from cryptocurrency transactions; no public dataset combines real bank transfers with group-level labels.
+
+For the second, we found that results are hard to compare: no two of the recent studies share the same dataset, task and metric, so no model can be declared better than another across studies. Within studies, well-tuned tree-based models such as XGBoost remain competitive with GNNs, which are most useful when fraud is defined by a structure, such as a cycle or a laundering path, or when they are combined with a tabular model.
+
+For the third, we observed clear progress over the last two years, notably in the modeling of time and in the evaluation of highly imbalanced data. Important gaps remain, however: group-level detection is still rare outside cryptocurrency and synthetic data, unsupervised methods are scarce, and few studies release their code. A common evaluation protocol, with public data, chronological splits and a strong tabular baseline, would be a first step toward comparable results.
 
