@@ -116,7 +116,207 @@ take full responsibility for the content of this paper.
   )
   },
 ) <tab:ai_use>
+== Background <sec:background>
 
+=== Graph representation and message passing
+
+Financial transactions can be represented as a graph
+$cal(G) = (cal(V), cal(E))$. The nodes $cal(V)$ represent entities such as
+bank accounts, credit cards, merchants, or devices. The edges $cal(E)$
+represent relationships between them. For example, a money transfer is a
+directed edge from the sending account to the receiving account. Two accounts
+that use the same device can each be linked to the node representing that
+device.
+
+A financial graph is heterogeneous when it contains multiple types of nodes
+or edges. It is attributed when these nodes or edges carry additional
+information. Each node $v$ can have a feature vector $bold(x)_v$, containing
+information such as an account's age or balance. Each edge $(u, v)$ can have
+a feature vector $bold(x)_(u v)$, containing information such as the amount
+and timestamp of a transfer.
+
+A graph neural network (GNN) uses *message passing* to combine information
+about an entity with information from its neighbors. For example, the
+activity of the accounts that send money to an account can provide additional
+context for assessing its fraud risk.
+
+The initial representation of node $v$ is $bold(h)_v^((0)) = bold(x)_v$.
+At layer $k$, the node receives messages from its incoming neighbors
+$cal(N)(v)$ and aggregates them as follows.
+
+$
+  bold(m)_v^((k)) =
+    plus.o_(u in cal(N)(v))
+    "MSG"^((k))(
+      bold(h)_u^((k-1)),
+      bold(h)_v^((k-1)),
+      bold(x)_(u v)
+    )
+$
+
+The function $"MSG"$ computes the message from neighbor $u$ using the
+previous representations of the two nodes and, where available, the edge
+features. The operator $plus.o$ combines the messages independently of their
+order, for example by taking their sum or mean. The update function then
+combines the aggregated message with the previous representation of $v$.
+
+$
+  bold(h)_v^((k)) =
+    "UPDATE"^((k))(bold(h)_v^((k-1)), bold(m)_v^((k)))
+$
+
+After $K$ layers, a node can incorporate information from entities up to $K$
+steps away along the paths followed by the messages. This can help identify
+indirect connections in money laundering chains. The resulting node
+representations can be used to assign a fraud risk score to an account or
+transaction.
+
+#figure(
+  block(
+    width: 100%,
+    fill: rgb("#f2f6fa"),
+    stroke: 0.6pt + rgb("#9eb5c8"),
+    radius: 4pt,
+    inset: 10pt,
+  )[
+    *Raw transactions* $arrow.r$ *Financial graph*
+    $arrow.r$ *Message passing* $arrow.r$ *Fraud risk score*
+  ],
+  caption: [From raw transactions to a graph-based fraud risk score.],
+) <fig:mpnn_pipeline>
+
+When the target is a group of accounts, the model needs a representation of
+the candidate subgraph. On the Elliptic2 benchmark, simply pooling the node
+representations produced results close to random. Classification improved
+when the model was told which nodes belonged to the candidate subgraph and
+could use information from the surrounding graph (Bellei et al., 2024).
+
+=== GNN architectures for financial fraud detection
+
+Motie and Raahemi (2024) group GNN models for financial fraud detection into
+four families according to how they gather and combine information from the
+graph.
+
+*Convolutional models.* Graph Convolutional Networks (GCNs) aggregate neighbor
+features using weights based on node degrees. They provide a baseline for
+static transaction graphs. GraphSAGE typically samples a fixed number of
+neighbors and combines their features with those of the target node. Its
+learned aggregation function can be applied to new accounts when their
+features and connections are available.
+
+*Attention-based models.* Graph Attention Networks (GATs) learn a weight
+$alpha_(u v)$ for the contribution of neighbor $u$ to node $v$. This lets the
+model give more weight to the neighbors that are most informative for its
+prediction.
+
+*Meta-path-based models.* These models aggregate information along predefined
+sequences of node or edge types in a heterogeneous graph. For example, an
+account–device–account meta-path connects accounts that use the same device.
+
+*Transformer-based models.* These models use self-attention to combine
+information across the graph. Depending on the architecture, attention can
+incorporate information from beyond the direct neighbors of a node.
+
+#figure(
+  table(
+    columns: (auto, 1fr, 1fr, 1fr),
+    align: left,
+    inset: 5pt,
+    stroke: 0.4pt + rgb("#ccd6df"),
+    table.header(
+      [*Model*], [*Core idea*], [*Advantage*], [*Limitation*],
+    ),
+    [*GCN*],
+    [Degree-normalized aggregation of neighbor features.],
+    [Simple baseline for static transaction graphs.],
+    [The original transductive setup assumes that target nodes are already
+      present in the training graph.],
+    [*GraphSAGE*],
+    [Samples neighbors and combines their features with those of the target
+      node.],
+    [Can score unseen accounts using their features and connections.],
+    [Sampling can miss rare but informative connections.],
+    [*GAT*],
+    [Learns attention weights for neighboring nodes.],
+    [Can give more weight to informative connections.],
+    [Attention over many edges can increase memory use and latency.],
+  ),
+  caption: [Comparison of three foundational GNN architectures.],
+) <tab:gnn_backbones>
+
+We extend the taxonomy of Motie and Raahemi (2024) with the models covered in
+our results. ATGNN-SP uses a simplified two-hop graph convolution (Yue et
+al., 2026). Three other studies use GraphSAGE (Silva et al., 2026,
+Sumsuzzaman et al., 2026, and Dintakurthy et al., 2026). LAS-GNN, MEGA-PNA,
+and GLASS form an additional message-passing branch. They use ego-ID message
+passing, Principal Neighbourhood Aggregation (PNA), and subgraph labeling,
+respectively (Verlaan et al., 2025, Bilgi et al., 2026, and Bellei et al.,
+2024).
+
+C2GAT and HTGNN belong to the attention family. Both use graph attention, and
+HTGNN also uses transformer-style attention to combine entity representations
+(Chen et al., 2026, and Nguyen et al., 2025). The meta-path and Transformer
+branches retain the models from the original taxonomy.
+
+// To include the blue diagram, put the PNG at figures/taxonomy-blue.png
+// relative to this .typ file, then remove the opening and closing comment
+// markers around the figure below.
+/*
+#figure(
+  image("figures/taxonomy-blue.png", width: 100%),
+  caption: [
+    Taxonomy of GNN models for financial fraud detection, adapted from
+    Motie and Raahemi (2024) and extended with the models covered in our results.
+  ],
+) <fig:taxonomy>
+*/
+
+=== Training paradigms and label availability
+
+Confirmed fraud cases are rare, and investigations can delay labeling.
+*Supervised learning* uses verified historical labels. Weighted or focal
+losses can help account for the imbalance between fraudulent and legitimate
+examples.
+
+In *semi-supervised learning*, only some accounts or transactions are
+labeled. The model uses those labels for training while drawing on the
+features and connections of unlabeled entities through message passing.
+
+When confirmed fraud labels are unavailable, *unsupervised learning* can
+search for unusual patterns through graph reconstruction or subgraph mining.
+*Self-supervised learning* derives training signals from the graph itself.
+For example, contrastive learning can train a model to bring the
+representations of two views of the same entity or subgraph closer together.
+The learned representations can then be used to identify unusual patterns.
+
+#figure(
+  table(
+    columns: (auto, 1fr, 1fr, auto),
+    align: left,
+    inset: 5pt,
+    stroke: 0.4pt + rgb("#ccd6df"),
+    table.header(
+      [*Paradigm*], [*Label availability*], [*How it learns*], [*Example*],
+    ),
+    [*Supervised*],
+    [Verified historical labels are available.],
+    [Minimizes a classification loss on labeled examples.],
+    [PC-GNN],
+    [*Semi-supervised*],
+    [Only a subset of entities or transactions is labeled.],
+    [Uses labeled examples for training and draws on the surrounding graph.],
+    [GTAN],
+    [*Unsupervised*],
+    [Confirmed fraud labels are unavailable.],
+    [Searches for unusual patterns in the graph structure or attributes.],
+    [Subgraph mining],
+    [*Self-supervised*],
+    [Training signals are derived from the graph.],
+    [Learns from a task such as aligning two views of the same subgraph.],
+    [Audit-HCL],
+  ),
+  caption: [Comparison of training paradigms by label availability.],
+) <tab:learning_paradigms>
 
 == Existing review papers and limits
 // TODO A faire par aymen, bientot fait
